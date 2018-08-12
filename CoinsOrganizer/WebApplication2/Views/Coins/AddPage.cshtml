@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "/Views/Menu.cshtml";
+}
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>NEW COIN</h1>
+    <fieldset>
+        <form action="/Coins/AddCoin">
+            <input type="text" name="title" required placeholder="Name">
+            <input type="text" name="cost" required placeholder="Cost">
+            <input type="text" name="link" required placeholder="Link">
+            @*<select name="health">
+                <option value=true>Healthy</option>
+                <option value=false>Injured</option>
+            </select>*@
+            @*<input type="text" name="salary" required placeholder="Salary" pattern="^[0-9]+$">*@
+            <input type="submit" value="ADD">
+        </form>
+    </fieldset>
+</div>

@@ -1,0 +1,181 @@
+﻿@{
+    Layout = "/Views/Menu.cshtml";
+}
+@using System.Globalization
+@using CoinsOrganizer.Models
+
+<link rel="stylesheet" href="~/css/table.css?@DateTime.Now.Ticks" />
+
+<script type="text/javascript">
+
+    function AlertName(name) {
+
+        alert('You clicked ' + name + "!");
+
+    }
+
+    function CurrencyFormatted(amount, currency) {
+        var i = parseFloat(amount);
+        if (isNaN(i)) {
+            i = 0.00;
+        }
+        var minus = '';
+        if (i < 0) {
+            minus = '-';
+        }
+        i = Math.abs(i);
+        i = parseInt((i + .005) * 100);
+        i = i / 100;
+        s = new String(i);
+        if (s.indexOf('.') < 0) {
+            s += '.00';
+        }
+        if (s.indexOf('.') == (s.length - 2)) {
+            s += '0';
+        }
+        s = minus + s;
+        return s;
+    }
+
+</script>
+
+<table style="width:100%;height:100%;" class="table_dark">
+    <tr>
+        <th width="20">CoinID</th>
+        <th width="20">Av</th>
+        <th width="20">Rev</th>
+        <th width="500">Title</th>
+        <th width="65">Cost</th>
+        <th width="20">In stock</th>
+        <th width="65">zł</th>
+        <th width="200">Name in polish</th>
+        <th width="65">$</th>
+        <th>Name in english</th>
+        <th width="20">Sold</th>
+        <th width="40">Link</th>
+    </tr>
+    @foreach (CoinModel coin in Model)
+    {
+    <tr>
+        @*Coin ID*@
+        <td> @coin.CoinId </td>
+
+        @*Avers*@
+        <td>
+            <div class="a1">
+                <a style="color: blue" href="@coin.AversFotoLink" target="_blank">@coin.AversFotoLink@*<span><img src="http://gdurl.com/eenp" alt="image" height="100"/></span>*@</a>
+            </div>
+        </td>
+
+        @*Revers*@
+        <td>
+            <div class="a1">
+                <a style="color: blue" href="@coin.ReversFotoLink" target="_blank">@coin.ReversFotoLink@*<span><img src="http://gdurl.com/eenp" alt="image" height="100"/></span>*@</a>
+            </div>
+        </td>
+
+        @*Coin name*@
+        <td>@coin.Name</td>
+
+        @*Price*@
+        <td style="alignment: right">@(coin.Cost.Equals(0d) ? "0 ₴" : string.Format(new CultureInfo("ua-Ua"), "{0:#,#.} ₴", coin.Cost))</td>
+
+        @*Is in stock*@
+        <td>
+            @if (coin.IsInStock)
+            {
+                <div style="background: gray">
+                    @coin.IsInStock
+                </div>
+            }
+            else
+            {
+                <div style="background: red">
+                    @coin.IsInStock
+                </div>
+            }
+        </td>
+
+        @*Zloty price*@
+        <td>
+            @*<form action="/Coins/EditPage/@coin.Id">
+                <input style="width: 100%; height: 100%; text-align: center" type="text"
+                       value="@(coin.ZlotyPrice.Equals(0d) ? string.Empty : string.Format("{0:#,#.} zł", coin.ZlotyPrice))">
+            </form>*@
+            <input style="width: 100%; height: 100%; text-align: center" type="text"
+                   value="@(coin.ZlotyPrice.Equals(0d) ? string.Empty : string.Format("{0:#,#.} zł", coin.ZlotyPrice))">
+        </td>
+
+        @*Polish name*@
+        <td>
+            @*<form action="/Coins/EditPage/@coin.Id">
+                <input style="width: 100%; height: 100%; text-align: center" type="text" value="@coin.PolishName">
+            </form>*@
+            <input style="width: 100%; height: 100%; text-align: center" type="text" value="@coin.PolishName">
+        </td>
+
+        @*Dollar price*@
+        <td>
+            @*<form action="/Coins/EditPage/@coin.Id">
+                <input style="width: 100%; height: 100%; text-align: center" type="text"
+                       value="@(coin.DollarPrice.Equals(0d) ? string.Empty : string.Format("{0:#,#.} $", coin.DollarPrice))">
+            </form>*@
+            <input style="width: 100%; height: 100%; text-align: center" type="text"
+                   value="@(coin.DollarPrice.Equals(0d) ? string.Empty : string.Format("{0:#,#.} $", coin.DollarPrice))">
+        </td>
+
+        @*English name*@
+        <td>
+            @*<form action="/Coins/EditPage/@coin.Id">
+                <input style="width: 100%; height: 100%; text-align: center" type="text" value="@coin.EnglishName">
+            </form>*@
+            <input style="width: 100%; height: 100%; text-align: center" type="text" value="@coin.EnglishName">
+        </td>
+
+        @*Is sold*@
+        <td>
+            @if (coin.IsSold)
+            {
+                <div style="background: red">
+                    @coin.IsSold
+                </div>
+            }
+            else
+            {
+                <div style="background: gray">
+                    @coin.IsSold
+                </div>
+            }
+        </td>
+
+        @*Link*@
+        <td>
+            @if (coin.Link.Contains("http"))
+            {
+                <div class="a2">
+                    <a style="color: blue; width: 50px" target="_blank" href="@coin.Link">@coin.Link"</a>
+                </div>
+            }
+            else
+            {
+                <div class="a2">
+                    @coin.Link
+                </div>
+            }
+        </td>
+
+        @*<td> @coin.IsInStock? yellow: gray
+        <form action="/Coins/EditPage/@coin.Id">
+            <input type="submit" value="Edit">
+            </td>*@
+        @*< td >
+        < form action = "/Players/Delete/@coin.Id" >
+
+             < input type = "submit" value = "Delete" >
+
+            </ form >
+
+        </ td > *@
+    </tr>
+    }
+</table>
