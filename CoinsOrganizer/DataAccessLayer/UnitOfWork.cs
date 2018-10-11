@@ -10,6 +10,7 @@ namespace DataAccessLayer
     {
         private Context DataBase { get; }
         private CoinRepository coinsRepository;
+        private OrderRepository ordersRepository;
 
         public UnitOfWork()
         {
@@ -25,6 +26,17 @@ namespace DataAccessLayer
                 return coinsRepository;
             }
         }
+
+        public IRepository<Order> Orders
+        {
+            get
+            {
+                if (ordersRepository == null)
+                    ordersRepository = new OrderRepository(DataBase);
+                return ordersRepository;
+            }
+        }
+
         public void Save()
         {
             DataBase.SaveChanges();

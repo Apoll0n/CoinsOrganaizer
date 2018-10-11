@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Football scheduler</title>
+    <title>Coins Organizer</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -12,14 +12,33 @@
             <ul class="topmenu">
                 <li>
                     <a asp-area="" asp-controller="Coins" asp-action="ShowAllPage">Coins</a>
-                    <a asp-area="" asp-controller="Coins" asp-action="SearchPage">AddData</a>
                     @*<ul class="submenu">
-            <li><a asp-area="" asp-controller="Coins" asp-action="AddPage">Add coin</a></li>
-            <li><a asp-area="" asp-controller="Coins" asp-action="SearchPage">Search coin</a></li>
-            <li><a asp-area="" asp-controller="Coins" asp-action="ShowAllPage">Show all coins</a></li>
-        </ul>*@
+                <li><a asp-area="" asp-controller="Coins" asp-action="AddPage">Add coin</a></li>
+                <li><a asp-area="" asp-controller="Coins" asp-action="SearchPage">Search coin</a></li>
+                <li><a asp-area="" asp-controller="Coins" asp-action="ShowAllPage">Show all coins</a></li>
+            </ul>*@
                 </li>
-              
+                <li>
+                    <a asp-area="" asp-controller="Orders" asp-action="ShowAllPage">Orders</a>
+                </li>
+
+
+                <li>
+                    <a asp-area="" asp-controller="Coins" asp-action="SearchPage">AddCoinData</a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Orders" asp-action="SearchPage">AddOrderData</a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Ebay" asp-action="TestEbayApi">Ebay</a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Allegro" asp-action="TestAllegroApi">Allegro</a>
+                </li>
+
             </ul>
         </nav>
     </header>

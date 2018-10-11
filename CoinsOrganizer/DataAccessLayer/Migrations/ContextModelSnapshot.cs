@@ -20,13 +20,11 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Coin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CoinId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AversFotoLink");
-
-                    b.Property<int>("CoinId");
 
                     b.Property<double>("Cost");
 
@@ -44,17 +42,73 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("OrderForeignKey");
+
                     b.Property<string>("PolishName");
 
                     b.Property<string>("ReversFotoLink");
 
-                    b.Property<double>("SoldPrice");
-
                     b.Property<double>("ZlotyPrice");
 
-                    b.HasKey("Id");
+                    b.HasKey("CoinId");
+
+                    b.HasIndex("OrderForeignKey");
 
                     b.ToTable("Coins");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CoinForeignKey");
+
+                    b.Property<string>("Email");
+
+                    b.Property<bool>("IsPaid");
+
+                    b.Property<string>("Link");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("NickName")
+                        .IsRequired();
+
+                    b.Property<string>("OrderDetails");
+
+                    b.Property<string>("SaleCurrency");
+
+                    b.Property<double>("SalePrice");
+
+                    b.Property<string>("TrackNumber");
+
+                    b.Property<string>("WhereSold")
+                        .IsRequired();
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("CoinForeignKey");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Coin", b =>
+                {
+                    b.HasOne("DataAccessLayer.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Order", b =>
+                {
+                    b.HasOne("DataAccessLayer.Coin", "Coin")
+                        .WithMany()
+                        .HasForeignKey("CoinForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

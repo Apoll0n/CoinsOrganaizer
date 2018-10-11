@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "/Views/Menu.cshtml";
+}
+@using System.Globalization
+@using CoinsOrganizer.Models
+@model IEnumerable<CoinsOrganizer.Models.OrderModel>
+
+<link rel="stylesheet" href="~/css/table.css?@DateTime.Now.Ticks" />
+
+<table style="width:100%;height:100%;" class="table_dark">
+    <tr>
+        <th width="20">CoinID</th>
+        <th width="500">Name</th>
+        <th width="100">Link</th>
+        <th width="10">Paid</th>
+        <th width="65">Sale Price</th>
+        <th width="150">NickName</th>
+        <th width="150">Email</th>
+        <th width="100">TrackN</th>
+        <th width="50">Order Details</th>
+        <th width="65">Cost</th>
+    </tr>
+    @foreach (OrderModel order in Model)
+    {
+    <tr>
+        @*Coin ID*@
+        <td> @order.OrderId </td>
+
+
+        @*Coin name*@
+        <td>@order.Name</td>
+
+        @*Link*@
+        <td>
+            <div class="a1">
+                <a style="color: blue" href="@order.Link" target="_blank">@order.Link</a>
+            </div>
+        </td>
+
+        @*Paid*@
+        <td>
+            
+            @if (order.IsPaid)
+            {
+                <div>
+                    т
+                </div>
+            }
+            else
+            {
+                <div style="background: red">
+                    н
+                </div>
+            }
+        </td>
+
+        @*Price*@
+        <td style="text-align: right">@string.Format("{0}{1}", order.SalePrice, order.SaleCurrency)</td>
+
+        @*NickName*@
+        <td>@order.NickName</td>
+
+        @*Email*@
+        <td>@order.Email</td>
+
+        @*TrackNumber*@
+        <td>@order.TrackNumber</td>
+
+        @*OrderDetails*@
+        <td>@order.OrderDetails</td>
+
+        @*Cost*@
+        <td>@*@order.Coin.Cost*@</td>
+    </tr>
+    }
+</table>

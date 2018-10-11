@@ -5,24 +5,50 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Connected Services\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.35.1.1303" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\allegro web api c#\allegro.net\AllegroWebService\AllegroWebService.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="eBay.Service">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\eBay.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="eBay.Service.SDK.Attribute">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\eBay.Service.SDK.Attribute.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MSXML2">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\Interop.MSXML2.dll</HintPath>
+    </Reference>
+    <Reference Include="Samples.Helper">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\Samples.Helper.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

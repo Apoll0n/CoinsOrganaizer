@@ -16,7 +16,6 @@ namespace CoinsOrganizer.Models
         public string EnglishName { get; set; }
         public double ZlotyPrice { get; set; }
         public double DollarPrice { get; set; }
-        public double SoldPrice { get; set; }
         public bool IsSold { get; set; }
         public bool IsInStock { get; set; }
         public string AversFotoLink { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using BusinessLogic.Entities;
-using DataAccessLayer;
+using DataAccessLayer2;
 
 namespace BusinessLogic
 {
@@ -17,11 +17,74 @@ namespace BusinessLogic
             DB = new UnitOfWork();
         }
 
+        public void AddOrder(OrderBL element)
+        {
+            DB.Orders.Create(Mapper.Map<Order>(element));
+            DB.Save();
+        }
+
         public void AddCoin(CoinBL element)
         {
             DB.Coins.Create(Mapper.Map<Coin>(element));
             DB.Save();
         }
+
+        public void RemoveCoin(int id)
+        {
+            DB.Coins.Delete(id);
+            DB.Save();
+        }
+
+        public void RemoveOrder(int id)
+        {
+            DB.Orders.Delete(id);
+            DB.Save();
+        }
+
+        public void UpdateCoin(CoinBL element)
+        {
+            Coin toUpdate = DB.Coins.Read(element.CoinId);
+
+            if (toUpdate != null)
+            {
+                toUpdate = Mapper.Map<Coin>(element);
+                DB.Coins.Update(toUpdate);
+                DB.Save();
+            }
+        }
+
+        public void UpdateOrder(OrderBL element)
+        {
+            Order toUpdate = DB.Orders.Read(element.OrderId);
+
+            if (toUpdate != null)
+            {
+                toUpdate = Mapper.Map<Order>(element);
+                DB.Orders.Update(toUpdate);
+                DB.Save();
+            }
+        }
+
+        public IEnumerable<CoinBL> GetCoins()
+        {
+            List<CoinBL> result = new List<CoinBL>();
+
+            foreach (var item in DB.Coins.ReadAll())
+                result.Add(Mapper.Map<CoinBL>(item));
+
+            return result;
+        }
+
+        public IEnumerable<OrderBL> GetOrders()
+        {
+            List<OrderBL> result = new List<OrderBL>();
+
+            foreach (var item in DB.Orders.ReadAll())
+                result.Add(Mapper.Map<OrderBL>(item));
+
+            return result;
+        }
+
         //public void AddGame(GameBL element)
         //{
         //    List<Player> players = Mapper.Map<List<Player>>(element.Players);
@@ -45,12 +108,6 @@ namespace BusinessLogic
         //    DB.Save();
         //}
 
-        public void RemoveCoin(int id)
-        {
-            DB.Coins.Delete(id);
-            DB.Save();
-        }
-
         //public void RemoveAllCoins()
         //{
         //    foreach (var coin in DB.Coins.ReadAll())
@@ -71,17 +128,6 @@ namespace BusinessLogic
         //    DB.Save();
         //}
 
-        public void UpdateCoin(CoinBL element)
-        {
-            Coin toUpdate = DB.Coins.Read(element.Id);
-
-            if (toUpdate != null)
-            {
-                toUpdate = Mapper.Map<Coin>(element);
-                DB.Coins.Update(toUpdate);
-                DB.Save();
-            }
-        }
         //public void UpdateGame(GameBL element)
         //{
         //    Game toUpdate = DB.Games.Read(element.Id);
@@ -115,15 +161,6 @@ namespace BusinessLogic
         //    }
         //}
 
-        public IEnumerable<CoinBL> GetCoins()
-        {
-            List<CoinBL> result = new List<CoinBL>();
-
-            foreach (var item in DB.Coins.ReadAll())
-                result.Add(Mapper.Map<CoinBL>(item));
-
-            return result;
-        }
         //public IEnumerable<GameBL> GetGames()
         //{
         //    List<GameBL> result = new List<GameBL>();

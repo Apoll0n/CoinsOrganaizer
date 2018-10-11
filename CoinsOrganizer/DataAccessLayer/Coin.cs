@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DataAccessLayer
 {
     public class Coin
     {
-        public int Id { get; set; }
-
-        [Required]
+        [Key]
         public int CoinId { get; set; }
 
         [Required]
@@ -29,11 +28,14 @@ namespace DataAccessLayer
         public double ZlotyPrice { get; set; }
 
         public double DollarPrice { get; set; }
-        public double SoldPrice { get; set; }
 
         public bool IsSold { get; set; }
         public bool IsInStock { get; set; }
         public string AversFotoLink { get; set; }
         public string ReversFotoLink { get; set; }
+        public int OrderForeignKey { get; set; }
+
+        [ForeignKey("OrderForeignKey")]
+        public Order Order { get; set; }
     }
 }

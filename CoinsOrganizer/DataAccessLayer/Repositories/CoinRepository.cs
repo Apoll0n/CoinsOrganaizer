@@ -22,19 +22,19 @@ namespace DataAccessLayer.Repositories
         {
             return DB.Coins.Find(id);
         }
-        public void Create(Coin game)
+        public void Create(Coin coin)
         {
-            DB.Coins.Add(game);
+            DB.Coins.Add(coin);
         }
-        public void Update(Coin game)
+        public void Update(Coin coin)
         {
-            DB.Coins.Update(game);
+            DB.Coins.Update(coin);
         }
         public void Delete(int id)
         {
-            Coin game = DB.Coins.Find(id);
-            if (game != null)
-                DB.Coins.Remove(game);
+            Coin coin = DB.Coins.Find(id);
+            if (coin != null)
+                DB.Coins.Remove(coin);
         }
     }
 }

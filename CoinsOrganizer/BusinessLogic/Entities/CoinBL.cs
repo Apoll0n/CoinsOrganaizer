@@ -11,7 +11,6 @@ namespace BusinessLogic.Entities
         public string Link { get; set; }
         public string PolishName { get; set; }
         public string EnglishName { get; set; }
-        public double SoldPrice { get; set; }
         public double ZlotyPrice { get; set; }
         public double DollarPrice { get; set; }
         public bool IsSold { get; set; }
