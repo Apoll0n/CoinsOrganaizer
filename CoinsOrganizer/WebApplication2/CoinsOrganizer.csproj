@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="ChilkatDnCore" Version="9.5.0.75" />
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.35.1.1303" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
@@ -24,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\allegro web api c#\allegro.net\AllegroWebService\AllegroWebService.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+    <ProjectReference Include="..\EbayWebService\EbayWebService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

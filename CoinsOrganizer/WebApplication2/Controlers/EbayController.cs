@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
+using AllegroWebService.WebApiService;
 using eBay.Service.Core.Soap;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +20,14 @@ namespace CoinsOrganizer.Controlers
         {
 
 
+
+
+            //var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport)
+            //{
+            //    MaxReceivedMessageSize = 15000000 // You might have to adjust this depending on how much data the API calls return
+            //};
+
+            //var client = new ebay (binding, new EndpointAddress("https://api.ebay.com/wsapi"));
             //string endpoint = "https://api.sandbox.ebay.com/wsapi";
             //string callName = "GeteBayOfficialTime";
             //string siteId = "0";

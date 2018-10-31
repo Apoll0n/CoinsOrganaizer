@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CoinsOrganizer.MarketService;
+using EbayWebService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +13,7 @@ namespace CoinsOrganizer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            EbayService.InitializeEbay();
         }
 
         public IConfiguration Configuration { get; }

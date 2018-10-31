@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroWebService", "..\..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbayWebService", "EbayWebService\EbayWebService.csproj", "{783989A2-6980-45BE-A191-C3C9FFAAA160}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinsOrganizerDesktop", "CoinsOrganizerDesktop\CoinsOrganizerDesktop\CoinsOrganizerDesktop.csproj", "{36A6C9F3-ACB7-45B3-9A24-AC9DBA7DF8E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{783989A2-6980-45BE-A191-C3C9FFAAA160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{783989A2-6980-45BE-A191-C3C9FFAAA160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{783989A2-6980-45BE-A191-C3C9FFAAA160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36A6C9F3-ACB7-45B3-9A24-AC9DBA7DF8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36A6C9F3-ACB7-45B3-9A24-AC9DBA7DF8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36A6C9F3-ACB7-45B3-9A24-AC9DBA7DF8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36A6C9F3-ACB7-45B3-9A24-AC9DBA7DF8E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

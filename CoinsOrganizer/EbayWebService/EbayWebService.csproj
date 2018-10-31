@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ChilkatDnCore" Version="9.5.0.75" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
@@ -17,6 +18,15 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="eBay.Service">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\eBay.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="eBay.Service.SDK.Attribute">
+      <HintPath>..\..\..\..\..\Program Files (x86)\eBay\eBay .NET SDK v1065 Release\eBay.Service.SDK.Attribute.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

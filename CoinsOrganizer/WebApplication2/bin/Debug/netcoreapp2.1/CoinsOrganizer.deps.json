@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "cbf5f19fd1c0c022c11ce494154484b80e70749e"
+    "signature": "bf7bf20b3ec353b6e5078c225dd4498ee54f9fd7"
   },
   "compilationOptions": {
     "defines": [
@@ -24,11 +24,23 @@
     ".NETCoreApp,Version=v2.1": {
       "CoinsOrganizer/1.0.0": {
         "dependencies": {
+          "AllegroWebService": "1.0.0",
           "AutoMapper": "7.0.1",
           "BusinessLogic": "1.0.0",
+          "ChilkatDnCore": "9.5.0.75",
+          "EbayWebService": "1.0.0",
+          "Google.Apis.Sheets.v4": "1.35.1.1303",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.1"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.1",
+          "System.ServiceModel.Duplex": "4.4.4",
+          "System.ServiceModel.Http": "4.5.3",
+          "System.ServiceModel.NetTcp": "4.4.4",
+          "System.ServiceModel.Security": "4.4.4",
+          "eBay.Service": "3.1055.0.0",
+          "eBay.Service.SDK.Attribute": "3.1027.0.0",
+          "Interop.MSXML2": "3.0.0.0",
+          "Samples.Helper": "3.1027.0.0"
         },
         "runtime": {
           "CoinsOrganizer.dll": {}
@@ -49,6 +61,45 @@
         },
         "compile": {
           "lib/netcoreapp2.0/AutoMapper.dll": {}
+        }
+      },
+      "ChilkatDnCore/9.5.0.75": {
+        "dependencies": {
+          "ChilkatNativeLib": "9.5.0.75",
+          "Microsoft.NETCore.App": "2.1.0"
+        },
+        "runtime": {
+          "lib/netcoreapp1.0/ChilkatDnCore.dll": {
+            "assemblyVersion": "9.5.0.75",
+            "fileVersion": "9.5.0.75"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp1.0/ChilkatDnCore.dll": {}
+        }
+      },
+      "ChilkatNativeLib/9.5.0.75": {
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libchilkatDnCore-9_5_0.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libchilkatDnCore-9_5_0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win7-x64/native/chilkatDnCore-9_5_0.dll": {
+            "rid": "win7-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win7-x86/native/chilkatDnCore-9_5_0.dll": {
+            "rid": "win7-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
         }
       },
       "Google.Apis/1.35.1": {
@@ -592,11 +643,120 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
+      "System.Private.ServiceModel/4.5.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.1.0",
+          "System.Reflection.DispatchProxy": "4.5.0",
+          "System.Security.Principal.Windows": "4.5.0"
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard2.0/System.Private.ServiceModel.dll": {
+            "rid": "unix",
+            "assetType": "runtime",
+            "assemblyVersion": "4.5.0.3",
+            "fileVersion": "4.6.26720.1"
+          },
+          "runtimes/win/lib/netstandard2.0/System.Private.ServiceModel.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "4.5.0.3",
+            "fileVersion": "4.6.26720.1"
+          }
+        }
+      },
+      "System.Reflection.DispatchProxy/4.5.0": {},
+      "System.ServiceModel.Duplex/4.4.4": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.5.3",
+          "System.ServiceModel.Primitives": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.ServiceModel.Duplex.dll": {
+            "assemblyVersion": "4.1.0.3",
+            "fileVersion": "4.6.26720.1"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ServiceModel.Duplex.dll": {}
+        }
+      },
+      "System.ServiceModel.Http/4.5.3": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.5.3",
+          "System.ServiceModel.Primitives": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.ServiceModel.Http.dll": {
+            "assemblyVersion": "4.5.0.3",
+            "fileVersion": "4.6.26720.1"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ServiceModel.Http.dll": {}
+        }
+      },
+      "System.ServiceModel.NetTcp/4.4.4": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.5.3",
+          "System.ServiceModel.Primitives": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.ServiceModel.NetTcp.dll": {
+            "assemblyVersion": "4.1.2.3",
+            "fileVersion": "4.6.26720.1"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ServiceModel.NetTcp.dll": {}
+        }
+      },
+      "System.ServiceModel.Primitives/4.5.3": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.ServiceModel.Primitives.dll": {
+            "assemblyVersion": "4.5.0.3",
+            "fileVersion": "4.6.26720.1"
+          },
+          "lib/netstandard2.0/System.ServiceModel.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.26720.1"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ServiceModel.Primitives.dll": {},
+          "ref/netstandard2.0/System.ServiceModel.dll": {}
+        }
+      },
+      "System.ServiceModel.Security/4.4.4": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.5.3",
+          "System.ServiceModel.Primitives": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.ServiceModel.Security.dll": {
+            "assemblyVersion": "4.0.3.3",
+            "fileVersion": "4.6.26720.1"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ServiceModel.Security.dll": {}
+        }
+      },
       "System.ValueTuple/4.5.0": {},
+      "AllegroWebService/1.0.0": {
+        "runtime": {
+          "AllegroWebService.dll": {}
+        },
+        "compile": {
+          "AllegroWebService.dll": {}
+        }
+      },
       "BusinessLogic/1.0.0": {
         "dependencies": {
           "AutoMapper": "7.0.1",
-          "DataAccessLayer": "1.0.0"
+          "DataAccessLayer2": "1.0.0"
         },
         "runtime": {
           "BusinessLogic.dll": {}
@@ -605,20 +765,77 @@
           "BusinessLogic.dll": {}
         }
       },
-      "DataAccessLayer/1.0.0": {
+      "DataAccessLayer2/1.0.0": {
         "dependencies": {
-          "AutoMapper": "7.0.1",
-          "Google.Apis.Sheets.v4": "1.35.1.1303",
           "Microsoft.EntityFrameworkCore": "2.1.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.1.1",
           "Microsoft.EntityFrameworkCore.Tools": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0"
         },
         "runtime": {
-          "DataAccessLayer.dll": {}
+          "DataAccessLayer2.dll": {}
         },
         "compile": {
-          "DataAccessLayer.dll": {}
+          "DataAccessLayer2.dll": {}
+        }
+      },
+      "EbayWebService/1.0.0": {
+        "dependencies": {
+          "ChilkatDnCore": "9.5.0.75",
+          "System.ServiceModel.Duplex": "4.4.4",
+          "System.ServiceModel.Http": "4.5.3",
+          "System.ServiceModel.NetTcp": "4.4.4",
+          "System.ServiceModel.Security": "4.4.4"
+        },
+        "runtime": {
+          "EbayWebService.dll": {}
+        },
+        "compile": {
+          "EbayWebService.dll": {}
+        }
+      },
+      "eBay.Service/3.1055.0.0": {
+        "runtime": {
+          "eBay.Service.dll": {
+            "assemblyVersion": "3.1055.0.0",
+            "fileVersion": "3.1055.0.0"
+          }
+        },
+        "compile": {
+          "eBay.Service.dll": {}
+        }
+      },
+      "eBay.Service.SDK.Attribute/3.1027.0.0": {
+        "runtime": {
+          "eBay.Service.SDK.Attribute.dll": {
+            "assemblyVersion": "3.1027.0.0",
+            "fileVersion": "3.1027.0.0"
+          }
+        },
+        "compile": {
+          "eBay.Service.SDK.Attribute.dll": {}
+        }
+      },
+      "Interop.MSXML2/3.0.0.0": {
+        "runtime": {
+          "Interop.MSXML2.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "Interop.MSXML2.dll": {}
+        }
+      },
+      "Samples.Helper/3.1027.0.0": {
+        "runtime": {
+          "Samples.Helper.dll": {
+            "assemblyVersion": "3.1027.0.0",
+            "fileVersion": "3.1027.0.0"
+          }
+        },
+        "compile": {
+          "Samples.Helper.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3571,6 +3788,20 @@
       "path": "automapper/7.0.1",
       "hashPath": "automapper.7.0.1.nupkg.sha512"
     },
+    "ChilkatDnCore/9.5.0.75": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Nr2OEGZYvebDPN+356/7l4cBann/HsHQ5AfJ6mF0lgfuGWBkq6djuEGyPla5haS2VVqpz+Iie+V9Uj174eMQ2Q==",
+      "path": "chilkatdncore/9.5.0.75",
+      "hashPath": "chilkatdncore.9.5.0.75.nupkg.sha512"
+    },
+    "ChilkatNativeLib/9.5.0.75": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vOI0Irz3DZx4YEs+0XoqdSnvRlkQ+bl3KDpbJ7mRc1mpUN1YnS9vefpaDOtwlvw0nhOPUk4CO+v2w5XrjPJqtg==",
+      "path": "chilkatnativelib/9.5.0.75",
+      "hashPath": "chilkatnativelib.9.5.0.75.nupkg.sha512"
+    },
     "Google.Apis/1.35.1": {
       "type": "package",
       "serviceable": true,
@@ -3774,6 +4005,55 @@
       "path": "system.linq.parallel/4.3.0",
       "hashPath": "system.linq.parallel.4.3.0.nupkg.sha512"
     },
+    "System.Private.ServiceModel/4.5.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TRkNLXhUasgpBESQnxbZozE2PxTmvKbkuHqjhqaPa+N0gsvfbWTRqHWg4KvcTFb9Xy1k3n8Y6VX3BRbYhU5Wsg==",
+      "path": "system.private.servicemodel/4.5.3",
+      "hashPath": "system.private.servicemodel.4.5.3.nupkg.sha512"
+    },
+    "System.Reflection.DispatchProxy/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2iafuenmPvt9Y+j8nscAVQyj7g4EU55ICNdMIrbF8WN+MbNehiJaunucpFjE1SAdLRclDbm0kqmYatWsiqeCvQ==",
+      "path": "system.reflection.dispatchproxy/4.5.0",
+      "hashPath": "system.reflection.dispatchproxy.4.5.0.nupkg.sha512"
+    },
+    "System.ServiceModel.Duplex/4.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-av0L+0quVcRKKIrPm1mjzcbP203Qk7Ni3AKzW+ozWdsEr9TzNREYmP8soCQtZBtT4bn3FPzkG40m8nIDAWqFWA==",
+      "path": "system.servicemodel.duplex/4.4.4",
+      "hashPath": "system.servicemodel.duplex.4.4.4.nupkg.sha512"
+    },
+    "System.ServiceModel.Http/4.5.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-98N0bE5Ln8km1QdMSUlymMedsS4+820iKsli9QgVbVeEl2XfTWTFvaStG/8cqtb2u6xLn76AulD7mqJvR1YgVg==",
+      "path": "system.servicemodel.http/4.5.3",
+      "hashPath": "system.servicemodel.http.4.5.3.nupkg.sha512"
+    },
+    "System.ServiceModel.NetTcp/4.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sGZT0jGKyDBtWv3SD+Ldk4MinQEijEec1cVcNFnBvSFTt+awUeVZ2E2uBXHOeslosMscOHn8OSMG/Etblm0VlA==",
+      "path": "system.servicemodel.nettcp/4.4.4",
+      "hashPath": "system.servicemodel.nettcp.4.4.4.nupkg.sha512"
+    },
+    "System.ServiceModel.Primitives/4.5.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cZp5aMKHubNtuGAQviYXFqskewYBdyWpqT3g8rPAE5awve/kRK6g2uTZnFr4BhrjkT2bu9sR4N6Mx+vsQUtjpg==",
+      "path": "system.servicemodel.primitives/4.5.3",
+      "hashPath": "system.servicemodel.primitives.4.5.3.nupkg.sha512"
+    },
+    "System.ServiceModel.Security/4.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8fL79L2pIrvZJZxh3ccrqWMWpQdrQ1eSYZ2xHFlTM/3fL/8H/HPpeHPZAIwd7ikq3qFgCKtjX/WJi+0hfM0pDw==",
+      "path": "system.servicemodel.security/4.4.4",
+      "hashPath": "system.servicemodel.security.4.4.4.nupkg.sha512"
+    },
     "System.ValueTuple/4.5.0": {
       "type": "package",
       "serviceable": true,
@@ -3781,13 +4061,43 @@
       "path": "system.valuetuple/4.5.0",
       "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     },
+    "AllegroWebService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "BusinessLogic/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "DataAccessLayer/1.0.0": {
+    "DataAccessLayer2/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EbayWebService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "eBay.Service/3.1055.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "eBay.Service.SDK.Attribute/3.1027.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Interop.MSXML2/3.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Samples.Helper/3.1027.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
