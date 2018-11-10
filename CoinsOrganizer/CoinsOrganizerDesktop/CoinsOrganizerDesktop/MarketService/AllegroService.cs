@@ -39,10 +39,82 @@ namespace CoinsOrganizerDesktop.MarketService
             {
                 _timer = new DispatcherTimer(TimeSpan.FromMinutes(1), DispatcherPriority.Background,
                     RefreshAllegroData, Dispatcher.CurrentDispatcher);
-                _timer.Start();
+                //_timer.Start();
+                //_timer.
                 RefreshAllegroData(null, null);
             }
         }
+
+        public static void EditItem()
+        {
+            var editCopyItem = ActiveList.Single(x => x.itemId == 7658160599);
+            AfterSalesServiceConditionsStruct afterSalesServiceConditionsStruct;
+            string additionalServicesGroup; 
+             var copyItemFields = _apiContext.doGetItemFields(_login, editCopyItem.itemId, out afterSalesServiceConditionsStruct, out additionalServicesGroup);
+            //var copyItemFields2 =
+            //    _apiContext.doSellSomeAgain()
+
+            FieldsValue fsValu = copyItemFields.SingleOrDefault(x => x.fid == 6);
+            //foreach (var copyItemField in copyItemFields)
+            //{
+            //    if (copyItemField.fvalueString!= "")
+            //    {
+
+            //    }
+            //}
+            fsValu.fvalueFloat = 14.99f;
+            var editTargetItem = ActiveList.Single(x => x.itemId == 7653601016);
+
+            var firstEdit = _apiContext.doChangeItemFields(_login, 7653601016,
+                new FieldsValue[]
+                {
+                    fsValu
+                    //new FieldsValue{fid = 6, fvalueFloat = 14.99f},
+                    //new FieldsValue{fid = 29, fvalueInt = 0},
+
+                }
+                , null, 0, null, null, null, null);
+
+
+
+        }
+
+
+        public static void CheckDublicates()
+        {
+            var hasInd = ActiveList.Where(x => x.itemTitle.Contains("(") && x.itemTitle.Contains(")"));
+            var dontHaveInd = ActiveList
+                .Where(x => !x.itemTitle.Contains("(") && !x.itemTitle.Contains(")")).Select(x => x.itemTitle);
+            var indexes = hasInd
+                //    .Where(x=>
+                //{
+                //    var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
+                //    var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
+                //    int result;
+                //    return int.TryParse(coinIndex, out result);
+                //})
+                .SelectMany(x =>
+                    {
+                        var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
+                        var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
+                        int result;
+                        if (!int.TryParse(coinIndex, out result))
+                        {
+                            return new[] { new { Index = -1, Index2 = coinIndex, x } };
+                        }
+                        return new[] { new { Index = result, Index2 = coinIndex, x } };
+                    }
+
+                ).OrderBy(x => x.Index);
+
+            var duplicates = indexes
+                .GroupBy(i => i.Index)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+        }
+
+
+
 
         private static void RefreshAllegroData(object sender, EventArgs eventArgs)
         {
@@ -72,50 +144,7 @@ namespace CoinsOrganizerDesktop.MarketService
                 _apiContext.doGetMySoldItems(_login, null, null, null, 0, null, 0, i, out soldItems);
             }
 
-            //var adsasd = categories.Where(x => x.catId.Equals(91098));
-
-            //GetCategories(91098);
-
-            //foreach (var catIndex in _catsIndexes)
-            //{
-            //    client.doGetMySellItems(login, null, null, null, 9333, null, 100, 0, out itemStructs);
-            //    foreach (var sellItem in itemStructs)
-            //    {
-            //        _cats.Add(sellItem);
-            //    }
-            //}
-
-            //var hasInd = _cats.Where(x => x.itemTitle.Contains("(") && x.itemTitle.Contains(")"));
-            //var dontHaveInd = _cats.Where(x => !x.itemTitle.Contains("(") && !x.itemTitle.Contains(")"));
-            //var indexes = hasInd
-            //    //    .Where(x=>
-            //    //{
-            //    //    var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
-            //    //    var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
-            //    //    int result;
-            //    //    return int.TryParse(coinIndex, out result);
-            //    //})
-            //    .SelectMany(x =>
-            //    {
-            //        var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
-            //        var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
-            //        int result;
-            //        if (!int.TryParse(coinIndex, out result))
-            //        {
-            //            return new[] { new { Index = -1, Index2 = coinIndex, x } };
-            //        }
-            //        return new[] { new { Index = result, Index2 = coinIndex, x } };
-            //    }
-
-            //    ).OrderBy(x => x.Index);
-
-            //var duplicates = indexes
-            //    .GroupBy(i => i.Index)
-            //    .Where(g => g.Count() > 1)
-            //    .Select(g => g.Key);
-            //BidItemStruct[] bidItems;
-
-            //var adfadasd = client.doGetMyBidItems(login, null, null, 0, null, 0, 0, out bidItems);
+            
         }
 
         private static void GetApiContext()

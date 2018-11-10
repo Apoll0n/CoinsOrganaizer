@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using CoinsOrganizerDesktop.MarketService;
 
 namespace CoinsOrganizerDesktop
@@ -18,6 +19,7 @@ namespace CoinsOrganizerDesktop
         {
             EbayService.InitializeEbay();
             AllegroService.InitializeAllegro();
+            Mapper.Initialize(cfg => { });
             base.OnStartup(e);
         }
     }

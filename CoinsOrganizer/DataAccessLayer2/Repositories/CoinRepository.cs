@@ -17,23 +17,35 @@ namespace DataAccessLayer2.Repositories
         {
             return DB.Coins;
         }
+
         public Coin Read(int id)
         {
             return DB.Coins.Find(id);
         }
+
         public void Create(Coin coin)
         {
             DB.Coins.Add(coin);
         }
+
         public void Update(Coin coin)
         {
             DB.Coins.Update(coin);
         }
+
         public void Delete(int id)
         {
             Coin coin = DB.Coins.Find(id);
             if (coin != null)
                 DB.Coins.Remove(coin);
+        }
+
+        public void Delete(Coin coin)
+        {
+            if (coin != null)
+            {
+                DB.Coins.Remove(coin);
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ namespace CoinsOrganizerDesktop.MarketService
             {
                 _timer = new DispatcherTimer(TimeSpan.FromMinutes(1), DispatcherPriority.Background,
                     RefreshEbayData, Dispatcher.CurrentDispatcher);
-                _timer.Start();
+                //_timer.Start();
             }
         }
 

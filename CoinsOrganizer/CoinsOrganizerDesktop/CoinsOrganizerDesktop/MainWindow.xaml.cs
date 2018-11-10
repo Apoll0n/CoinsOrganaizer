@@ -16,11 +16,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CoinsOrganizerDesktop.DataBase.DataBaseModels;
+using CoinsOrganizerDesktop.Database.DatabaseModels;
 using CoinsOrganizerDesktop.DataBase.DbContext;
 using CoinsOrganizerDesktop.MarketService;
 using CoinsOrganizerDesktop.ViewModels;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -42,75 +43,136 @@ namespace CoinsOrganizerDesktop
             DataContext = new MainWindowViewModel();
             _ordersList = new List<Order>();
 
+            AllegroService.EditItem();
+
             var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
-            //var db = new CoinsOrganizerContext(connectionString);
-            using (var db = new CoinsOrganizerContext(connectionString))
+
+            /*string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+            string ApplicationName = "Google Sheets API .NET Quickstart";
+
+            UserCredential credential;
+
+            using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
-
-                //var coin = new Coin() { CoinId = 2, Cost = 11, Name = "Poltorak1", Link = "link" };
-                //var coin2 = new Coin() { CoinId = 3, Cost = 12, Name = "Poltorak2", Link = "link" };
-                //db.Coins.Add(coin);
-                //db.Coins.Add(coin2);
-                //db.SaveChanges();
-
-                ////var query = db.Coins.OrderBy(x => x.Name);
-
-                ////foreach (var coin1 in query)
-                ////{
-
-                ////}
-
-
-                //var order = new Order()
-                //{
-                //    CoinId = 2,
-                //    Name = "Polt",
-                //    NickName = "apollon",
-                //    SalePrice = 10,
-                //    WhereSold = "Allegro"
-                //};
-                //var order2 = new Order()
-                //{
-                //    CoinId = 3,
-                //    Name = "Polt2",
-                //    NickName = "apollon2",
-                //    SalePrice = 10,
-                //    WhereSold = "Allegro2"
-                //};
-                //db.Orders.Add(order);
-                //db.Orders.Add(order2);
-                //db.SaveChanges();
-
-                var orders = db.Orders.OrderBy(x => x.Name);
-                var coins = db.Coins.OrderBy(x => x.Name);
-
-                foreach (var order1 in orders)
-                {
-                    //var order = order1.Coin;
-                    db.Orders.Remove(order1);
-
-                }
-                db.SaveChanges();
-
-                foreach (var coin1 in coins)
-                {
-                    //var coin = coin1.Order;
-                    //coin.OrderId = Orders
-                    db.Coins.Remove(coin1);
-
-                    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
-                    //if (orderCollection != null && orderCollection.Count()>0)
-                    //{
-
-                    //}
-                }
-                db.SaveChanges();
+                string credPath = "token.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
             }
 
-            //CheckAllegroIndexes();
+            // Create Google Sheets API service.
+            var service = new DriveService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "Drive Oauth2 Authentication Sample"
+            });
 
-            UploadCoins();
-            UploadOrders();
+
+            string pageToken = null;
+            do
+            {
+                var request = service.Files.List();
+                request.Q = "mimeType='image/png'";
+                request.Spaces = "drive";
+                request.Fields = "nextPageToken, files(id, name)";
+                request.PageToken = pageToken;
+                var result = request.Execute();
+                foreach (var file in result.Files)
+                {
+                    Console.WriteLine(String.Format(
+                        "Found file: {0} ({1})", file.Name, file.Id));
+                }
+                pageToken = result.NextPageToken;
+            } while (pageToken != null);*/
+
+
+            //using (var db = new CoinsOrganizerContext(connectionString))
+            //{
+            //    var coins = db.Coins.OrderBy(x => x.Name);
+
+            //    foreach (var coin in coins)
+            //    {
+            //        coin.IsSold = true;
+            //        //var order = order1.Coin;
+            //        //db.Orders.Remove(order1);
+
+            //    }
+            //    db.SaveChanges();
+            //}
+            //var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
+            //var db = new CoinsOrganizerContext(connectionString);
+            /* using (var db = new CoinsOrganizerContext(connectionString))
+             {
+
+                 //var coin = new Coin() { CoinId = 2, Cost = 11, Name = "Poltorak1", Link = "link" };
+                 //var coin2 = new Coin() { CoinId = 3, Cost = 12, Name = "Poltorak2", Link = "link" };
+                 //db.Coins.Add(coin);
+                 //db.Coins.Add(coin2);
+                 //db.SaveChanges();
+
+                 ////var query = db.Coins.OrderBy(x => x.Name);
+
+                 ////foreach (var coin1 in query)
+                 ////{
+
+                 ////}
+
+
+                 //var order = new Order()
+                 //{
+                 //    CoinId = 2,
+                 //    Name = "Polt",
+                 //    NickName = "apollon",
+                 //    SalePrice = 10,
+                 //    WhereSold = "Allegro"
+                 //};
+                 //var order2 = new Order()
+                 //{
+                 //    CoinId = 3,
+                 //    Name = "Polt2",
+                 //    NickName = "apollon2",
+                 //    SalePrice = 10,
+                 //    WhereSold = "Allegro2"
+                 //};
+                 //db.Orders.Add(order);
+                 //db.Orders.Add(order2);
+                 //db.SaveChanges();
+
+                 var orders = db.Orders.OrderBy(x => x.Name);
+                 var coins = db.Coins.OrderBy(x => x.Name);
+
+                 foreach (var order1 in orders)
+                 {
+                     //var order = order1.Coin;
+                     //db.Orders.Remove(order1);
+
+                 }
+                 db.SaveChanges();
+
+                 foreach (var coin1 in coins)
+                 {
+                     //var coin = coin1.Order;
+                     //coin.OrderId = Orders
+                     //db.Coins.Remove(coin1);
+
+                     //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
+                     //if (orderCollection != null && orderCollection.Count()>0)
+                     //{
+
+                     //}
+                 }
+                 db.SaveChanges();
+             }
+
+             //CheckAllegroIndexes();
+
+             UploadCoins();
+             UploadOrders();*/
         }
 
         private void CheckAllegroIndexes()
@@ -419,6 +481,119 @@ namespace CoinsOrganizerDesktop
                     db.SaveChanges();
                 }
             }
+        }
+    }
+
+    public class DriveListExample
+    {
+        public class FilesListOptionalParms
+        {
+            /// 
+
+            /// The source of files to list.
+            /// 
+            public string Corpus { get; set; }
+            /// 
+
+            /// A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder', 'modifiedByMeTime', 'modifiedTime', 'name', 'quotaBytesUsed', 'recency', 'sharedWithMeTime', 'starred', and 'viewedByMeTime'. Each key sorts ascending by default, but may be reversed with the 'desc' modifier. Example usage: ?orderBy=folder,modifiedTime desc,name. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.
+            /// 
+            public string OrderBy { get; set; }
+            /// 
+
+            /// The maximum number of files to return per page.
+            /// 
+            public int? PageSize { get; set; }
+            /// 
+
+            /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
+            /// 
+            public string PageToken { get; set; }
+            /// 
+
+            /// A query for filtering the file results. See the "Search for Files" guide for supported syntax.
+            /// 
+            public string Q { get; set; }
+            /// 
+
+            /// A comma-separated list of spaces to query within the corpus. Supported values are 'drive', 'appDataFolder' and 'photos'.
+            /// 
+            public string Spaces { get; set; }
+            /// 
+
+            /// Selector specifying a subset of fields to include in the response.
+            /// 
+            public string fields { get; set; }
+            /// 
+
+            /// Alternative to userIp.
+            /// 
+            public string quotaUser { get; set; }
+            /// 
+
+            /// IP address of the end user for whom the API call is being made.
+            /// 
+            public string userIp { get; set; }
+        }
+
+        /// 
+
+        /// Lists or searches files. 
+        /// Documentation https://developers.google.com/drive/v3/reference/files/list
+        /// Generation Note: This does not always build corectly.  Google needs to standardise things I need to figuer out which ones are wrong.
+        /// 
+        /// Authenticated drive service.  
+        /// Optional paramaters.        /// FileListResponse
+        public static Google.Apis.Drive.v3.Data.FileList ListFiles(DriveService service, FilesListOptionalParms optional = null)
+        {
+            try
+            {
+                // Initial validation.
+                if (service == null)
+                    throw new ArgumentNullException("service");
+
+                // Building the initial request.
+                var request = service.Files.List();
+                // Applying optional parameters to the request.                
+                request = (FilesResource.ListRequest)SampleHelpers.ApplyOptionalParms(request, optional);
+                // Requesting data.
+                return request.Execute();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Request Files.List failed.", ex);
+            }
+        }
+
+
+    }
+    public static class SampleHelpers
+    {
+
+        /// 
+
+        /// Using reflection to apply optional parameters to the request.  
+        /// 
+        /// If the optonal parameters are null then we will just return the request as is.
+        /// 
+        /// The request. 
+        /// The optional parameters. 
+        /// 
+        public static object ApplyOptionalParms(object request, object optional)
+        {
+            if (optional == null)
+                return request;
+
+            System.Reflection.PropertyInfo[] optionalProperties = (optional.GetType()).GetProperties();
+
+            foreach (System.Reflection.PropertyInfo property in optionalProperties)
+            {
+                // Copy value from optional parms to the request.  They should have the same names and datatypes.
+                System.Reflection.PropertyInfo piShared = (request.GetType()).GetProperty(property.Name);
+                if (property.GetValue(optional, null) != null) // TODO Test that we do not add values for items that are null
+                    piShared.SetValue(request, property.GetValue(optional, null), null);
+            }
+
+            return request;
         }
     }
 }

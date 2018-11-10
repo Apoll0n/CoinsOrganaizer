@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CoinsOrganizerDesktop.ViewModels;
 
-namespace CoinsOrganizerDesktop
+namespace CoinsOrganizerDesktop.Views
 {
     /// <summary>
     /// Interaction logic for CoinsView.xaml
@@ -23,6 +24,7 @@ namespace CoinsOrganizerDesktop
         public CoinsView()
         {
             InitializeComponent();
+            DataContext = new CoinsViewModel();
         }
     }
 }
