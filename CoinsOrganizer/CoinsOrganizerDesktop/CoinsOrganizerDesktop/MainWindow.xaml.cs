@@ -43,9 +43,41 @@ namespace CoinsOrganizerDesktop
             DataContext = new MainWindowViewModel();
             _ordersList = new List<Order>();
 
-            AllegroService.EditItem();
 
-            var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
+            //AllegroService.EditItem();
+
+            /*var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
+            using (var db = new CoinsOrganizerContext(connectionString))
+            {
+                var orders = db.Orders;
+                //var coins = db.Coins;
+
+                foreach (var order1 in orders)
+                {
+                    //var order = order1.Coin;
+                    db.Orders.Remove(order1);
+
+                }
+
+                //foreach (var coin1 in coins)
+                //{
+                //    //var coin = coin1.Order;
+                //    //coin.OrderId = Orders
+                //    db.Coins.Remove(coin1);
+
+                //    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
+                //    //if (orderCollection != null && orderCollection.Count()>0)
+                //    //{
+
+                //    //}
+                //}
+                db.SaveChanges();
+            }
+
+            UploadOrders();*/
+
+
+
 
             /*string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
             string ApplicationName = "Google Sheets API .NET Quickstart";
@@ -238,7 +270,7 @@ namespace CoinsOrganizerDesktop
 
             // Define request parameters.
             String spreadsheetId = "13Hh_x_kU9BhBryuIwwGvB6r0PpztjZaVu8y5-5BbeTk";
-            String range = "'Висилка'!A2:I1348";
+            String range = "'Висилка'!A2:I1411";
             SpreadsheetsResource.ValuesResource.GetRequest request =
                 service.Spreadsheets.Values.Get(spreadsheetId, range);
 
@@ -386,7 +418,7 @@ namespace CoinsOrganizerDesktop
             // Define request parameters.
             String spreadsheetId = "13Hh_x_kU9BhBryuIwwGvB6r0PpztjZaVu8y5-5BbeTk";
             //String range = "New!A1351:N1355";
-            String range = "New!A2:N2008";
+            String range = "New!A2:N2144";
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(spreadsheetId, range);
 
@@ -450,7 +482,6 @@ namespace CoinsOrganizerDesktop
                                 Name = title,
                                 Cost = price,
                                 Link = link,
-                                //OrderForeignKey = index,
                                 ZlotyPrice = allegroPrice,
                                 PolishName = allegroName,
                                 DollarPrice = dollarPrice,
@@ -484,116 +515,116 @@ namespace CoinsOrganizerDesktop
         }
     }
 
-    public class DriveListExample
-    {
-        public class FilesListOptionalParms
-        {
-            /// 
+    //public class DriveListExample
+    //{
+    //    public class FilesListOptionalParms
+    //    {
+    //        /// 
 
-            /// The source of files to list.
-            /// 
-            public string Corpus { get; set; }
-            /// 
+    //        /// The source of files to list.
+    //        /// 
+    //        public string Corpus { get; set; }
+    //        /// 
 
-            /// A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder', 'modifiedByMeTime', 'modifiedTime', 'name', 'quotaBytesUsed', 'recency', 'sharedWithMeTime', 'starred', and 'viewedByMeTime'. Each key sorts ascending by default, but may be reversed with the 'desc' modifier. Example usage: ?orderBy=folder,modifiedTime desc,name. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.
-            /// 
-            public string OrderBy { get; set; }
-            /// 
+    //        /// A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder', 'modifiedByMeTime', 'modifiedTime', 'name', 'quotaBytesUsed', 'recency', 'sharedWithMeTime', 'starred', and 'viewedByMeTime'. Each key sorts ascending by default, but may be reversed with the 'desc' modifier. Example usage: ?orderBy=folder,modifiedTime desc,name. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.
+    //        /// 
+    //        public string OrderBy { get; set; }
+    //        /// 
 
-            /// The maximum number of files to return per page.
-            /// 
-            public int? PageSize { get; set; }
-            /// 
+    //        /// The maximum number of files to return per page.
+    //        /// 
+    //        public int? PageSize { get; set; }
+    //        /// 
 
-            /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
-            /// 
-            public string PageToken { get; set; }
-            /// 
+    //        /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
+    //        /// 
+    //        public string PageToken { get; set; }
+    //        /// 
 
-            /// A query for filtering the file results. See the "Search for Files" guide for supported syntax.
-            /// 
-            public string Q { get; set; }
-            /// 
+    //        /// A query for filtering the file results. See the "Search for Files" guide for supported syntax.
+    //        /// 
+    //        public string Q { get; set; }
+    //        /// 
 
-            /// A comma-separated list of spaces to query within the corpus. Supported values are 'drive', 'appDataFolder' and 'photos'.
-            /// 
-            public string Spaces { get; set; }
-            /// 
+    //        /// A comma-separated list of spaces to query within the corpus. Supported values are 'drive', 'appDataFolder' and 'photos'.
+    //        /// 
+    //        public string Spaces { get; set; }
+    //        /// 
 
-            /// Selector specifying a subset of fields to include in the response.
-            /// 
-            public string fields { get; set; }
-            /// 
+    //        /// Selector specifying a subset of fields to include in the response.
+    //        /// 
+    //        public string fields { get; set; }
+    //        /// 
 
-            /// Alternative to userIp.
-            /// 
-            public string quotaUser { get; set; }
-            /// 
+    //        /// Alternative to userIp.
+    //        /// 
+    //        public string quotaUser { get; set; }
+    //        /// 
 
-            /// IP address of the end user for whom the API call is being made.
-            /// 
-            public string userIp { get; set; }
-        }
+    //        /// IP address of the end user for whom the API call is being made.
+    //        /// 
+    //        public string userIp { get; set; }
+    //    }
 
-        /// 
+    //    /// 
 
-        /// Lists or searches files. 
-        /// Documentation https://developers.google.com/drive/v3/reference/files/list
-        /// Generation Note: This does not always build corectly.  Google needs to standardise things I need to figuer out which ones are wrong.
-        /// 
-        /// Authenticated drive service.  
-        /// Optional paramaters.        /// FileListResponse
-        public static Google.Apis.Drive.v3.Data.FileList ListFiles(DriveService service, FilesListOptionalParms optional = null)
-        {
-            try
-            {
-                // Initial validation.
-                if (service == null)
-                    throw new ArgumentNullException("service");
+    //    /// Lists or searches files. 
+    //    /// Documentation https://developers.google.com/drive/v3/reference/files/list
+    //    /// Generation Note: This does not always build corectly.  Google needs to standardise things I need to figuer out which ones are wrong.
+    //    /// 
+    //    /// Authenticated drive service.  
+    //    /// Optional paramaters.        /// FileListResponse
+    //    public static Google.Apis.Drive.v3.Data.FileList ListFiles(DriveService service, FilesListOptionalParms optional = null)
+    //    {
+    //        try
+    //        {
+    //            // Initial validation.
+    //            if (service == null)
+    //                throw new ArgumentNullException("service");
 
-                // Building the initial request.
-                var request = service.Files.List();
-                // Applying optional parameters to the request.                
-                request = (FilesResource.ListRequest)SampleHelpers.ApplyOptionalParms(request, optional);
-                // Requesting data.
-                return request.Execute();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Request Files.List failed.", ex);
-            }
-        }
+    //            // Building the initial request.
+    //            var request = service.Files.List();
+    //            // Applying optional parameters to the request.                
+    //            request = (FilesResource.ListRequest)SampleHelpers.ApplyOptionalParms(request, optional);
+    //            // Requesting data.
+    //            return request.Execute();
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw new Exception("Request Files.List failed.", ex);
+    //        }
+    //    }
 
 
-    }
-    public static class SampleHelpers
-    {
+    //}
+    //public static class SampleHelpers
+    //{
 
-        /// 
+    //    /// 
 
-        /// Using reflection to apply optional parameters to the request.  
-        /// 
-        /// If the optonal parameters are null then we will just return the request as is.
-        /// 
-        /// The request. 
-        /// The optional parameters. 
-        /// 
-        public static object ApplyOptionalParms(object request, object optional)
-        {
-            if (optional == null)
-                return request;
+    //    /// Using reflection to apply optional parameters to the request.  
+    //    /// 
+    //    /// If the optonal parameters are null then we will just return the request as is.
+    //    /// 
+    //    /// The request. 
+    //    /// The optional parameters. 
+    //    /// 
+    //    public static object ApplyOptionalParms(object request, object optional)
+    //    {
+    //        if (optional == null)
+    //            return request;
 
-            System.Reflection.PropertyInfo[] optionalProperties = (optional.GetType()).GetProperties();
+    //        System.Reflection.PropertyInfo[] optionalProperties = (optional.GetType()).GetProperties();
 
-            foreach (System.Reflection.PropertyInfo property in optionalProperties)
-            {
-                // Copy value from optional parms to the request.  They should have the same names and datatypes.
-                System.Reflection.PropertyInfo piShared = (request.GetType()).GetProperty(property.Name);
-                if (property.GetValue(optional, null) != null) // TODO Test that we do not add values for items that are null
-                    piShared.SetValue(request, property.GetValue(optional, null), null);
-            }
+    //        foreach (System.Reflection.PropertyInfo property in optionalProperties)
+    //        {
+    //            // Copy value from optional parms to the request.  They should have the same names and datatypes.
+    //            System.Reflection.PropertyInfo piShared = (request.GetType()).GetProperty(property.Name);
+    //            if (property.GetValue(optional, null) != null) // TODO Test that we do not add values for items that are null
+    //                piShared.SetValue(request, property.GetValue(optional, null), null);
+    //        }
 
-            return request;
-        }
-    }
+    //        return request;
+    //    }
+    //}
 }

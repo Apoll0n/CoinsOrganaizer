@@ -107,6 +107,7 @@
     <Compile Include="Database\OrderDB.cs" />
     <Compile Include="Helpers\ActionCommand.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
+    <Compile Include="Helpers\Converters\PriceStringToPriceIntConverter.cs" />
     <Compile Include="ViewModels\CoinsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\CoinsView.xaml.cs">

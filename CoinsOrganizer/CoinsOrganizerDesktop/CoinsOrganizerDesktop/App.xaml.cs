@@ -19,7 +19,7 @@ namespace CoinsOrganizerDesktop
         {
             EbayService.InitializeEbay();
             AllegroService.InitializeAllegro();
-            Mapper.Initialize(cfg => { });
+            //Mapper.Initialize(cfg => { });
             base.OnStartup(e);
         }
     }

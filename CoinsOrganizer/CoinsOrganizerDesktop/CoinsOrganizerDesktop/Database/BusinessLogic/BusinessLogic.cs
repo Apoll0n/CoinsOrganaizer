@@ -39,14 +39,16 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             DB.Save();
         }
 
+        public void Save()
+        {
+            DB.Save();
+        }
+
         public void UpdateCoin(CoinBL element)
         {
-            Coin toUpdate = DB.Coins.Read(element.CoinId);
-
-            if (toUpdate != null)
+            if (element != null)
             {
-                toUpdate = Mapper.Map<Coin>(element);
-                DB.Coins.Update(toUpdate);
+                DB.Coins.Update(element.CoinDB);
                 DB.Save();
             }
         }
@@ -65,63 +67,22 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public IEnumerable<Coin> GetCoins()
         {
-            List<CoinBL> result = new List<CoinBL>();
-
-            //foreach (var item in DB.Coins.ReadAll())
-            //{
-            //    var coinBl = new CoinBL
-            //    {
-            //        AversFotoLink = item.AversFotoLink,
-            //        CoinId = item.CoinId,
-            //        Cost = item.Cost,
-            //        DollarPrice = item.DollarPrice,
-            //        EnglishName = item.EnglishName,
-            //        IsInStock = item.IsInStock,
-            //        IsSold = item.IsSold,
-            //        Link = item.Link,
-            //        Name = item.Name,
-            //        OrderId = item.OrderId,
-            //        PolishName = item.PolishName,
-            //        ReversFotoLink = item.ReversFotoLink,
-            //        ZlotyPrice = item.ZlotyPrice
-            //    };
-
-            //    coinBl.Order = new List<OrderBL>();
-                  
-            //    foreach (var order in item.Order)
-            //    {
-            //        coinBl.Order.Add(new OrderBL
-            //        {
-            //            OrderId = order.OrderId,
-            //            Coin = order.Coin,
-            //            Email = order.Email,
-            //            CoinId = order.CoinId,
-            //            Name = order.Name,
-            //            Link = order.Link,
-            //            IsPaid = order.IsPaid,
-            //            NickName = order.NickName,
-            //            OrderDetails = order.OrderDetails,
-            //            SaleCurrency = order.SaleCurrency,
-            //            SalePrice = order.SalePrice,
-            //            TrackNumber = order.TrackNumber,
-            //            WhereSold = order.WhereSold,
-            //        });
-            //    }
-
-            //    result.Add(Mapper.Map<CoinBL>(item));
-            //}
-
             return DB.Coins.ReadAll().ToList();
         }
 
-        public IEnumerable<OrderBL> GetOrders()
+        public IEnumerable<CoinBL> GetCoinsBL()
         {
-            List<OrderBL> result = new List<OrderBL>();
+            return DB.CoinsBl;
+        }
 
-            foreach (var item in DB.Orders.ReadAll())
-                result.Add(Mapper.Map<OrderBL>(item));
+        public IEnumerable<Order> GetOrders()
+        {
+            return DB.Orders.ReadAll().ToList();
+        }
 
-            return result;
+        public IEnumerable<OrderBL> GetOrdersBL()
+        {
+            return DB.OrdersBl;
         }
 
         public void Dispose()

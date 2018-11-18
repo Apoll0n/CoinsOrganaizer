@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -16,6 +19,12 @@ namespace CoinsOrganizerDesktop.Database
         public CoinsDB(CoinsOrganizerContext context)
         {
             _context = context;
+        }
+
+        public BindingList<Coin> BindingList()
+        {
+            _context.Coins.Load();
+            return _context.Coins.Local.ToBindingList();
         }
 
         public IEnumerable<Coin> ReadAll()
@@ -40,7 +49,7 @@ namespace CoinsOrganizerDesktop.Database
 
         public void Update(Coin coin)
         {
-            //DB.Coins.Update(coin);
+            _context.Entry(coin).State = EntityState.Modified;
         }
 
         public void Delete(int id)

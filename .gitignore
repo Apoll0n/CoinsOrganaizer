@@ -511,3 +511,4 @@ CoinsOrganizer/WebApplication2/bin/Debug/netcoreapp2.1/credentials.json
 /CoinsOrganizer/CoinsOrganizerDesktop/packages/eBay.3.1065.0/lib/net40/*.XML
 /CoinsOrganizer/CoinsOrganizerDesktop/packages/eBay.3.1065.0/lib/net40/*.dll
 /CoinsOrganizer/CoinsOrganizerDesktop/packages/eBay.3.1065.0/lib/net40/*.tlb
+.vs

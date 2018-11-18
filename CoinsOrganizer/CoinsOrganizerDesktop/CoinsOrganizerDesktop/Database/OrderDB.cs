@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,12 @@ namespace CoinsOrganizerDesktop.Database
             return _context.Orders;
         }
 
+        public BindingList<Order> BindingList()
+        {
+            _context.Orders.Load();
+            return _context.Orders.Local.ToBindingList();
+        }
+
         public Order Read(int id)
         {
             return _context.Orders.Find(id);
@@ -40,7 +48,8 @@ namespace CoinsOrganizerDesktop.Database
 
         public void Update(Order coin)
         {
-            //DB.Coins.Update(coin);
+            _context.Entry(coin).State = EntityState.Modified;
+            Save();
         }
 
         public void Delete(int id)
