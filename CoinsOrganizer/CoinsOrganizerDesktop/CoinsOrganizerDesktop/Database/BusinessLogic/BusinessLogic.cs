@@ -27,6 +27,12 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             DB.Save();
         }
 
+        public void AddCoin(Coin element)
+        {
+            DB.Coins.Create(element);
+            DB.Save();
+        }
+
         public void RemoveCoin(int id)
         {
             DB.Coins.Delete(id);
@@ -46,11 +52,13 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public void UpdateCoin(CoinBL element)
         {
-            if (element != null)
+            if (element != null && GetCoinsBL().Any(x => x.CoinId.Equals(element.CoinId)))
             {
                 DB.Coins.Update(element.CoinDB);
                 DB.Save();
             }
+            else
+            { }
         }
 
         public void UpdateOrder(OrderBL element)
@@ -68,6 +76,11 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         public IEnumerable<Coin> GetCoins()
         {
             return DB.Coins.ReadAll().ToList();
+        }
+
+        public void ApplyChanges()
+        {
+            DB.IsDirty = true;
         }
 
         public IEnumerable<CoinBL> GetCoinsBL()

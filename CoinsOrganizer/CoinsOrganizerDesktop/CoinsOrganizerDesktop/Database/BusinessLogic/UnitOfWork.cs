@@ -32,6 +32,8 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             }
         }
 
+        public bool IsDirty { get; set; }
+
         public ICoinsRepository<Coin> Coins
         {
             get
@@ -56,7 +58,7 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         {
             get
             {
-                if (_coinsBl == null)
+                if (_coinsBl == null || IsDirty)
                 {
                     _coinsBl = new ObservableCollection<CoinBL>();
                     if (_coinsRepository == null)
@@ -80,7 +82,7 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         {
             get
             {
-                if (_ordersBl == null)
+                if (_ordersBl == null || IsDirty)
                 {
                     _ordersBl = new ObservableCollection<OrderBL>();
                     if (_ordersRepository == null)

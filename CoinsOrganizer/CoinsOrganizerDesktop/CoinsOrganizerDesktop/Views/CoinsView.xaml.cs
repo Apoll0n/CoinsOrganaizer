@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,6 +39,15 @@ namespace CoinsOrganizerDesktop.Views
         private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = IsTextAllowed(e.Text);
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            if (e.Uri.IsAbsoluteUri)
+            {
+                Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+                e.Handled = true;
+            }
         }
     }
 }

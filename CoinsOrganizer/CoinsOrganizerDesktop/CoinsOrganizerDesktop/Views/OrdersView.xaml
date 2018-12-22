@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="CoinsOrganizerDesktop.Views.CoinsView"
+    x:Class="CoinsOrganizerDesktop.Views.OrdersView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:CoinsOrganizerDesktop.Helpers.Converters"
@@ -631,7 +631,7 @@
                                                     FillBehavior="HoldEnd"
                                                     Storyboard.TargetName="avaliablePopup"
                                                     Storyboard.TargetProperty="IsOpen">
-                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.25" Value="True" />
+                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="True" />
                                                 </BooleanAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </BeginStoryboard>
@@ -650,55 +650,3 @@
     </Grid>
 </UserControl>
 
-
-
-
-
-
-<!--<ItemsControl
-            ItemsSource="{Binding Coins}"
-            ScrollViewer.CanContentScroll="True"
-            VirtualizingStackPanel.IsVirtualizing="True">
-
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.Template>
-                <ControlTemplate>
-                    <Border
-                        Padding="{TemplateBinding Control.Padding}"
-                        Background="{TemplateBinding Panel.Background}"
-                        BorderBrush="{TemplateBinding Border.BorderBrush}"
-                        BorderThickness="{TemplateBinding Border.BorderThickness}"
-                        SnapsToDevicePixels="True">
-                        <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                        </ScrollViewer>
-                    </Border>
-                </ControlTemplate>
-            </ItemsControl.Template>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border MinHeight="50" Margin="0 2" BorderThickness="0 0 0 1" BorderBrush="DarkCyan">
-                        <Grid ShowGridLines="True">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="45" />
-                                <ColumnDefinition Width="500" />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Text="{Binding CoinId}" />
-                            <TextBox TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Margin="3 0" Grid.Column="1" Text="{Binding Name}" />
-
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>--> 

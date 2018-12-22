@@ -40,8 +40,8 @@ namespace CoinsOrganizerDesktop.MarketService
 
             if (_timer == null)
             {
-                _timer = new DispatcherTimer(TimeSpan.FromMinutes(1), DispatcherPriority.Background,
-                    RefreshAllegroData, Dispatcher.CurrentDispatcher);
+                //_timer = new DispatcherTimer(TimeSpan.FromMinutes(1), DispatcherPriority.Background,
+                //    RefreshAllegroData, Dispatcher.CurrentDispatcher);
                 //_timer.Start();
                 //_timer.
                 RefreshAllegroData(null, null);
@@ -50,7 +50,7 @@ namespace CoinsOrganizerDesktop.MarketService
 
                 //GetAllegroItems(0,0);
 
-                CheckDublicates();
+                //CheckDublicates();
             }
         }
 
