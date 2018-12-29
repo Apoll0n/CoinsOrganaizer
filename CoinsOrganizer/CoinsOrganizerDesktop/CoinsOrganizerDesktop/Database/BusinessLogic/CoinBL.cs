@@ -93,10 +93,8 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public bool IsSold
         {
-            get
-            {
-                return OrderBL != null;
-            }
+            get { return OrderBL != null && OrderBL.IsPaid && OrderBL.IsShipped; }
+            set { CoinDB.IsSold = value; }
         }
 
         public bool IsInStock   

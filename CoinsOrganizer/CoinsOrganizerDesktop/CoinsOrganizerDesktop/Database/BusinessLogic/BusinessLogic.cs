@@ -21,6 +21,12 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             DB.Save();
         }
 
+        public void AddOrder(Order element)
+        {
+            DB.Orders.Create(element);
+            DB.Save();
+        }
+
         public void AddCoin(CoinBL element)
         {
             DB.Coins.Create(Mapper.Map<Coin>(element));
@@ -63,14 +69,24 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public void UpdateOrder(OrderBL element)
         {
-            Order toUpdate = DB.Orders.Read(element.OrderId);
-
-            if (toUpdate != null)
+            if (element != null && GetOrdersBL().Any(x => x.OrderId.Equals(element.OrderId)))
             {
-                toUpdate = Mapper.Map<Order>(element);
-                DB.Orders.Update(toUpdate);
+                DB.Orders.Update(element.OrderDB);
                 DB.Save();
             }
+            else
+            { }
+            //if (element != null)
+            //{
+            //    Order toUpdate = DB.Orders.Read(element.OrderId);
+
+            //    if (toUpdate != null)
+            //    {
+            //        toUpdate = Mapper.Map<Order>(element);
+            //        DB.Orders.Update(toUpdate);
+            //        DB.Save();
+            //    }
+            //}
         }
 
         public IEnumerable<Coin> GetCoins()

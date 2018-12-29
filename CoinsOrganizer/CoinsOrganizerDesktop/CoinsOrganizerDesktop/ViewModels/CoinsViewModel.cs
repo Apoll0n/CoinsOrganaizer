@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using CoinsOrganizerDesktop.Database.BusinessLogic;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
@@ -136,11 +137,18 @@ namespace CoinsOrganizerDesktop.ViewModels
             {
                 return new ActionCommand<CoinBL>((e) =>
                 {
-                    _businessLogic.RemoveCoin(((CoinBL) e).CoinId);
-                    _businessLogic.ApplyChanges();
+                    var coin = (CoinBL) e;
+                    MessageBoxResult result = MessageBox.Show(string.Format("Видалити {0}?/n{1}", coin.CoinId, coin.Name),
+                        "Confirmation", MessageBoxButton.YesNo);
 
-                    ChangeTableState(TableState);
-                    SortTableIndex(SortByDescending);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        _businessLogic.RemoveCoin(coin.CoinId);
+                        _businessLogic.ApplyChanges();
+
+                        ChangeTableState(TableState);
+                        SortTableIndex(SortByDescending);
+                    }
                 });
             }
         }

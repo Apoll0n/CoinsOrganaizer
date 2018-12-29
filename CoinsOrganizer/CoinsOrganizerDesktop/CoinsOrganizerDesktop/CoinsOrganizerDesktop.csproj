@@ -113,10 +113,15 @@
     <Compile Include="Database\OrderDB.cs" />
     <Compile Include="Helpers\ActionCommand.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
+    <Compile Include="Helpers\Converters\EnumValueToStringConverter.cs" />
     <Compile Include="Helpers\Converters\PriceStringToPriceIntConverter.cs" />
+    <Compile Include="Helpers\Extension\EnumValuesExtension.cs" />
     <Compile Include="ViewModels\CoinsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Model\Currency.cs" />
     <Compile Include="ViewModels\Model\NewCoinModel.cs" />
+    <Compile Include="ViewModels\Model\NewOrderModel.cs" />
+    <Compile Include="ViewModels\Model\WhereSold.cs" />
     <Compile Include="ViewModels\OrdersViewModel.cs" />
     <Compile Include="Views\CoinsView.xaml.cs">
       <DependentUpon>CoinsView.xaml</DependentUpon>

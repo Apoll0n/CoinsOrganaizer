@@ -551,6 +551,21 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid x:Name="AvaliableGrid" Background="White">
+
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem
+                                            Header="Наявний?"
+                                            IsCheckable="True"
+                                            IsChecked="{Binding IsInStock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <MenuItem
+                                            Command="{Binding DataContext.DeleteCoinCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}"
+                                            Header="Видалити монету" />
+
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />

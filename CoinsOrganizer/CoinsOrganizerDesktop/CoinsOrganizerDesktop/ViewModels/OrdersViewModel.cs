@@ -24,32 +24,59 @@ namespace CoinsOrganizerDesktop.ViewModels
             var ordersbl = _businessLogic.GetOrdersBL();
             Orders = new ObservableCollection<OrderBL>(ordersbl);
 
+            NewOrder = new NewOrderModel();
         }
+
+        public NewOrderModel NewOrder { get; set; }
 
         public bool SortByDescending { get; set; }
 
-        public ICommand AddNewCoinCommand
+        public ICommand AddNewOrderCommand
         {
             get
             {
                 return new ActionCommand(() =>
                 {
+                    var buyerInfos = NewOrder.BuyerInfo.Split(
+                        new[] {Environment.NewLine},
+                        StringSplitOptions.None);
 
-                    //var coin = new Coin
-                    //{
-                    //    AversFotoLink = NewCoin.AvFotoLink,
-                    //    ReversFotoLink = NewCoin.RevFotoLink,
-                    //    Cost = double.Parse(NewCoin.Price),
-                    //    Name = NewCoin.Name,
-                    //    Link = NewCoin.Link,
-                    //    CoinId = _businessLogic.GetCoinsBL().Max(x => x.CoinId) + 1
-                    //};
+                    string orderDetails = String.Empty;
+                    string email = String.Empty;
 
-                    //_businessLogic.AddCoin(coin);
+                    foreach (var buyerInfo in buyerInfos)
+                    {
+                        if (orderDetails != String.Empty)
+                        {
+                            orderDetails += ", ";
+                        }
 
-                    //_businessLogic.ApplyChanges();
+                        orderDetails += buyerInfo;
+                        if (buyerInfo.Contains("@"))
+                        {
+                            email = buyerInfo;
+                        }
+                    }
 
-                    //OnPropertyChanged(nameof(Orders));
+                    var order = new Order
+                    {
+                        
+                        SaleCurrency = CurrencyHelper.ConvertToSign(NewOrder.Currency),
+                        NickName = buyerInfos[0],
+                        Email = email,
+                        OrderDetails = orderDetails,
+                        SalePrice = NewOrder.Price,
+                        Name = NewOrder.Name,
+                        Link = NewOrder.Link,
+                        WhereSold = NewOrder.WhereSold.ToString(),
+                        CoinId = int.Parse(NewOrder.CoinIndex)
+                    };
+
+                    _businessLogic.AddOrder(order);
+
+                    _businessLogic.ApplyChanges();
+
+                    OnPropertyChanged(nameof(Orders));
                     //ChangeTableState(TableState);
                     //SortTableIndex(SortByDescending);
                 });

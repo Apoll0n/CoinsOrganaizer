@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
+using CoinsOrganizerDesktop.Helpers;
 
 namespace CoinsOrganizerDesktop.Database.BusinessLogic
 {
-    public class OrderBL
+    public class OrderBL : BaseViewModel
     {
         private int _orderId;
         private string _name;
@@ -58,6 +59,74 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             set { OrderDB.SalePrice = value; }
         }
 
+        public string SalePriceAndCurrency
+        {
+            get { return string.Format("{0} {1}", OrderDB.SalePrice, SaleCurrency); }
+        }
+
+
+        public string SellerInformation
+        {
+            get { return string.Format(@"{0}, {1}, {2}", NickName, Email, OrderDetails); } //OrderDetails; }
+        }
+
+        private bool _isShipped; // ADD TO DATABASE
+
+        public bool IsShipped
+        {
+            get { return _isShipped; }
+            set
+            {
+                _isShipped = value;
+
+                OnPropertyChanged(nameof(IsReadyForShipment));
+                OnPropertyChanged(nameof(IsCompleted));
+                OnPropertyChanged(nameof(HaveNotTrackedYetOnMarket));
+                OnPropertyChanged(nameof(IsShipped));
+
+                if (_isShipped)
+                {
+                    CoinBL.IsInStock = false;
+
+                    if (IsPaid)
+                    {
+                        CoinBL.IsSold = true;
+                    }
+                }
+            }
+        }
+
+        private bool _isTrackedOnMarket;
+
+        public bool IsTrackedOnMarket
+        {
+            get { return _isTrackedOnMarket; }
+            set
+            {
+                _isTrackedOnMarket = value;
+
+                OnPropertyChanged(nameof(IsReadyForShipment));
+                OnPropertyChanged(nameof(IsCompleted));
+                OnPropertyChanged(nameof(HaveNotTrackedYetOnMarket));
+                OnPropertyChanged(nameof(IsShipped));
+            }
+        }
+
+        public bool IsReadyForShipment
+        {
+            get { return IsPaid && !IsTrackedOnMarket && !IsShipped; }
+        }
+
+        public bool IsCompleted
+        {
+            get { return IsPaid && IsTrackedOnMarket && IsShipped; }
+        }
+
+        public bool HaveNotTrackedYetOnMarket
+        {
+            get { return IsPaid && !IsTrackedOnMarket && IsShipped; }
+        }
+
         public string TrackNumber
         {
             get { return OrderDB.TrackNumber; }
@@ -96,7 +165,21 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         public bool IsPaid
         {
             get { return OrderDB.IsPaid; }
-            set { OrderDB.IsPaid = value; }
+            set
+            {
+                OrderDB.IsPaid = value;
+
+                OnPropertyChanged(nameof(IsPaid));
+                OnPropertyChanged(nameof(IsReadyForShipment));
+                OnPropertyChanged(nameof(IsCompleted));
+                OnPropertyChanged(nameof(HaveNotTrackedYetOnMarket));
+                OnPropertyChanged(nameof(IsShipped));
+
+                if (value && IsShipped)
+                {
+                    CoinBL.IsSold = true;
+                }
+            }
         }
 
         public int CoinId

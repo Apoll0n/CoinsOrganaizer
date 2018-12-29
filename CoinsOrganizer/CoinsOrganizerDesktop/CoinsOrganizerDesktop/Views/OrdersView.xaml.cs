@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,25 @@ namespace CoinsOrganizerDesktop.Views
         {
             InitializeComponent();
             DataContext = new OrdersViewModel();
+        }
+
+        private void OnHyperlinkClick(object sender, RoutedEventArgs e)
+        {
+            var destination = ((Hyperlink) e.OriginalSource).NavigateUri;
+
+            if (destination != null && destination.IsAbsoluteUri)
+            {
+                using (Process browser = new Process())
+                {
+                    browser.StartInfo = new ProcessStartInfo
+                    {
+                        FileName = destination.ToString(),
+                        UseShellExecute = true,
+                        ErrorDialog = true
+                    };
+                    browser.Start();
+                }
+            }
         }
     }
 }

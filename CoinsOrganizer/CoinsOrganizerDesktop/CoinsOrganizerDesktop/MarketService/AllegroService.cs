@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using CoinsOrganizerDesktop.AllegroWebApiService;
@@ -19,6 +20,7 @@ namespace CoinsOrganizerDesktop.MarketService
         private static servicePortClient _apiContext = null;
         private static string _login = null;
         private static DispatcherTimer _timer = null;
+        private static Timer _timer2 = null;
 
         public static List<SellItemStruct> ActiveList { get; set; }
         public static List<SoldItemStruct> SoldList { get; set; }
@@ -40,6 +42,7 @@ namespace CoinsOrganizerDesktop.MarketService
 
             if (_timer == null)
             {
+                //_timer2 = new Timer(Callback, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
                 //_timer = new DispatcherTimer(TimeSpan.FromMinutes(1), DispatcherPriority.Background,
                 //    RefreshAllegroData, Dispatcher.CurrentDispatcher);
                 //_timer.Start();
@@ -52,6 +55,11 @@ namespace CoinsOrganizerDesktop.MarketService
 
                 //CheckDublicates();
             }
+        }
+
+        private static void Callback(object state)
+        {
+            RefreshAllegroData(null, null);
         }
 
         public static void EditItem()

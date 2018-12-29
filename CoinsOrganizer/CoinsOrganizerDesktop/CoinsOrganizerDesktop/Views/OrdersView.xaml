@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:CoinsOrganizerDesktop.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extension="clr-namespace:CoinsOrganizerDesktop.Helpers.Extension"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:CoinsOrganizerDesktop.ViewModels.Model"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -17,6 +19,10 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="DataGridInfoColumnTextElementStyle" TargetType="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
 
@@ -96,6 +102,7 @@
         </Style>
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:EnumValueToStringConverter x:Key="SelectedEnumValueConverter" />
 
     </UserControl.Resources>
 
@@ -122,20 +129,20 @@
                 Visibility="{Binding Source={x:Reference AddNewCoinTogButton}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="450" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="300" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock
+                <!--<TextBlock
                     Grid.Row="0"
                     Grid.Column="4"
                     HorizontalAlignment="Center"
@@ -175,7 +182,7 @@
                     VerticalContentAlignment="Center"
                     FontSize="16"
                     Foreground="Black"
-                    Text="{Binding NewCoin.RevFotoLink, UpdateSourceTrigger=LostFocus}" />
+                    Text="{Binding NewCoin.RevFotoLink, UpdateSourceTrigger=LostFocus}" />-->
 
                 <TextBlock
                     Grid.Row="0"
@@ -184,7 +191,7 @@
                     VerticalAlignment="Center"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Назва" />
+                    Text="Індекс монети" />
 
                 <TextBox
                     Grid.Row="1"
@@ -196,11 +203,17 @@
                     VerticalContentAlignment="Center"
                     FontSize="16"
                     Foreground="Black"
-                    Text="{Binding NewCoin.Name, UpdateSourceTrigger=LostFocus}" />
+                    Text="{Binding NewOrder.CoinIndex, UpdateSourceTrigger=LostFocus}" />
 
+                <ComboBox
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="2.5"
+                    ItemsSource="{Binding Source={extension:EnumValues {x:Type model:WhereSold}}}"
+                    SelectedItem="{Binding NewOrder.WhereSold, Mode=TwoWay, Converter={StaticResource SelectedEnumValueConverter}}" />
                 <TextBlock
                     Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="16"
@@ -209,6 +222,34 @@
 
                 <TextBox
                     Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="2.5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="16"
+                    Foreground="Black"
+                    Text="{Binding NewOrder.Price, UpdateSourceTrigger=LostFocus}" />
+
+                <ComboBox
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Margin="2.5"
+                    ItemsSource="{Binding Source={extension:EnumValues {x:Type model:Currency}}}"
+                    SelectedItem="{Binding NewOrder.Currency, Mode=TwoWay, Converter={StaticResource SelectedEnumValueConverter}}" />
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Назва" />
+
+                <TextBox
+                    Grid.Row="1"
                     Grid.Column="1"
                     Margin="2.5"
                     HorizontalAlignment="Stretch"
@@ -217,21 +258,11 @@
                     VerticalContentAlignment="Center"
                     FontSize="16"
                     Foreground="Black"
-                    PreviewTextInput="UIElement_OnPreviewTextInput"
-                    Text="{Binding NewCoin.Price, UpdateSourceTrigger=LostFocus}" />
-
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Text="Силка" />
+                    Text="{Binding NewOrder.Name, UpdateSourceTrigger=LostFocus}" />
 
                 <TextBox
-                    Grid.Row="1"
-                    Grid.Column="2"
+                    Grid.Row="2"
+                    Grid.Column="1"
                     Margin="2.5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -239,17 +270,33 @@
                     VerticalContentAlignment="Center"
                     FontSize="16"
                     Foreground="Black"
-                    Text="{Binding NewCoin.Link, UpdateSourceTrigger=LostFocus}" />
+                    Text="{Binding NewOrder.Link, UpdateSourceTrigger=LostFocus}" />
+
+                <TextBox
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    MaxHeight="51.24"
+                    Margin="2.5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Top"
+                    AcceptsReturn="True"
+                    FontSize="10"
+                    Foreground="Black"
+                    Text="{Binding NewOrder.BuyerInfo, UpdateSourceTrigger=LostFocus}"
+                    VerticalScrollBarVisibility="Auto" />
 
                 <Button
                     Grid.Row="1"
-                    Grid.Column="5"
+                    Grid.Column="4"
                     Width="100"
                     Margin="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Command="{Binding AddNewCoinCommand}"
-                    Content="Додати монету" />
+                    Command="{Binding AddNewOrderCommand}"
+                    Content="Додати висилку" />
             </Grid>
 
             <ToggleButton
@@ -258,7 +305,7 @@
                 Margin="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Додати нову" />
+                Content="Додати ордер" />
 
             <StackPanel
                 Grid.Column="1"
@@ -328,9 +375,10 @@
         <DataGrid
             Grid.Row="1"
             AutoGenerateColumns="False"
-            ItemsSource="{Binding Coins}"
+            ItemsSource="{Binding Orders}"
             SelectedItem="{Binding SelectedRow}"
             VirtualizingStackPanel.IsVirtualizing="True">
+
             <DataGrid.Columns>
 
                 <DataGridTemplateColumn Width="45" Header="ID">
@@ -338,7 +386,7 @@
                         <DataTemplate>
                             <Grid
                                 x:Name="IndexGrid"
-                                Height="50"
+                                Height="35"
                                 Margin="-1"
                                 Background="Red">
                                 <TextBlock
@@ -347,306 +395,138 @@
                                     FontSize="16"
                                     FontWeight="Bold"
                                     Text="{Binding CoinId}" />
-
-                                <Popup
-                                    x:Name="fotoPopup"
-                                    Width="50"
-                                    Height="40"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Mode=OneWay}"
-                                    Placement="Right">
-                                    <StackPanel Background="LightBlue">
-                                        <TextBlock>
-                                            <Hyperlink NavigateUri="{Binding AversFotoLink}" RequestNavigate="Hyperlink_RequestNavigate">
-                                                Avers
-                                            </Hyperlink>
-                                        </TextBlock>
-                                        <TextBlock>
-                                            <Hyperlink NavigateUri="{Binding ReversFotoLink}" RequestNavigate="Hyperlink_RequestNavigate">
-                                                Reverse
-                                            </Hyperlink>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Popup>
                             </Grid>
-
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="IndexGrid" Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard x:Name="bsb">
-                                            <Storyboard>
-                                                <BooleanAnimationUsingKeyFrames
-                                                    FillBehavior="HoldEnd"
-                                                    Storyboard.TargetName="fotoPopup"
-                                                    Storyboard.TargetProperty="IsOpen">
-                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.5" Value="True" />
-                                                </BooleanAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="bsb" />
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </DataTemplate.Triggers>
-
-
 
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!--  350  -->
-                <DataGridTextColumn
+
+                <DataGridHyperlinkColumn
                     Width="*"
-                    Binding="{Binding Path=Name}"
-                    EditingElementStyle="{StaticResource DataGridColumnTextEditElementStyle}"
-                    ElementStyle="{StaticResource DataGridColumnTextElementStyle}"
+                    Binding="{Binding Path=Link}"
+                    ContentBinding="{Binding Path=Name}"
                     Header="Монета"
-                    IsReadOnly="True" />
+                    IsReadOnly="True">
 
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnHyperlinkClick" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
 
-                <DataGridTemplateColumn Header="Ціна">
+                    <DataGridHyperlinkColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Resources>
+                                <Style TargetType="Hyperlink">
+                                    <Setter Property="Foreground" Value="Black" />
+                                </Style>
+                            </Style.Resources>
+                        </Style>
+                    </DataGridHyperlinkColumn.CellStyle>
+
+                </DataGridHyperlinkColumn>
+
+                <DataGridTemplateColumn Header="Ціна продажі">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid
-                                x:Name="PriceGrid"
-                                Margin="-1"
-                                Background="LightGoldenrodYellow">
+                            <Grid x:Name="PriceGrid" Margin="-1">
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem
+                                            Header="Оплачено"
+                                            IsCheckable="True"
+                                            IsChecked="{Binding IsPaid, Mode=TwoWay}" />
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+
                                 <TextBlock
-                                    HorizontalAlignment="Right"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     FontWeight="Bold"
                                     Foreground="Black"
-                                    Text="{Binding Path=Cost, StringFormat={}{0}грн.}" />
-
-                                <Popup
-                                    x:Name="linkPopup"
-                                    Width="200"
-                                    Height="50"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Mode=OneWay}"
-                                    Placement="Left">
-                                    <TextBlock
-                                        Background="LightBlue"
-                                        Text="{Binding Link}"
-                                        TextWrapping="Wrap" />
-                                </Popup>
+                                    Text="{Binding Path=SalePriceAndCurrency}" />
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPaid}" Value="True">
+                                                <Setter Property="Background" Value="DarkOliveGreen" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsPaid}" Value="False">
+                                                <Setter Property="Background" Value="#FFFFFFFF" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
                             </Grid>
 
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="PriceGrid" Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard x:Name="bsb">
-                                            <Storyboard>
-                                                <BooleanAnimationUsingKeyFrames
-                                                    FillBehavior="HoldEnd"
-                                                    Storyboard.TargetName="linkPopup"
-                                                    Storyboard.TargetProperty="IsOpen">
-                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.5" Value="True" />
-                                                </BooleanAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="bsb" />
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <!--<DataGridTextColumn
-                    Binding="{Binding Path=Cost, StringFormat={}{0}грн.}"
-                    EditingElementStyle="{StaticResource DataGridCostColumnEditElementStyle}"
-                    ElementStyle="{StaticResource DataGridCostColumnElementStyle}"
-                    Header="Ціна"
-                    IsReadOnly="True" />
+                <DataGridTemplateColumn Width="*" Header="Трек номер">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid x:Name="TrackNumberGrid" Margin="-1">
+
+                                <TextBox
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="Black"
+                                    Text="{Binding TrackNumber, Mode=TwoWay}">
+
+                                    <TextBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem
+                                                Header="Відправлено"
+                                                IsCheckable="True"
+                                                IsChecked="{Binding IsShipped, Mode=TwoWay}" />
+                                            <MenuItem
+                                                Header="Вказано на сайті"
+                                                IsCheckable="True"
+                                                IsChecked="{Binding IsTrackedOnMarket, Mode=TwoWay}" />
+                                        </ContextMenu>
+                                    </TextBox.ContextMenu>
+
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsReadyForShipment}" Value="True">
+                                                    <Setter Property="Background" Value="Violet" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                    <Setter Property="Background" Value="LimeGreen" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding HaveNotTrackedYetOnMarket}" Value="True">
+                                                    <Setter Property="Background" Value="#FFFFFFFF" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsPaid}" Value="False">
+                                                    <Setter Property="Background" Value="#FFFFFFFF" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn
-                    Width="80"
-                    Binding="{Binding Link}"
-                    EditingElementStyle="{StaticResource DataGridLinkColumnEditElementStyle}"
-                    ElementStyle="{StaticResource DataGridLinkColumnElementStyle}"
-                    Header="Де купили"
-                    IsReadOnly="True" />-->
-
-
-
-                <DataGridTemplateColumn Width="*" Header="Allegro">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-1">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Right"
-                                    VerticalContentAlignment="Center"
-                                    FontSize="16"
-                                    Foreground="Black"
-                                    PreviewTextInput="UIElement_OnPreviewTextInput"
-                                    Text="{Binding ZlotyPrice, Mode=TwoWay, StringFormat={}{0}zł, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
-
-                                <TextBox
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    FontSize="12"
-                                    Foreground="Black"
-                                    Text="{Binding PolishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Width="*" Header="Ebay">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-1">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Right"
-                                    VerticalContentAlignment="Center"
-                                    FontSize="16"
-                                    Foreground="Black"
-                                    PreviewTextInput="UIElement_OnPreviewTextInput"
-                                    Text="{Binding DollarPrice, Mode=TwoWay, StringFormat={}{0}$, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
-
-                                <TextBox
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    FontSize="12"
-                                    Foreground="Black"
-                                    Text="{Binding EnglishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="Проданий/Наявний">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid x:Name="AvaliableGrid" Background="White">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"
-                                    Foreground="Black"
-                                    Text="{Binding OrderBL.PriceCurrency, StringFormat=Продано за {0}}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSold}" Value="True">
-                                                    <Setter Property="Text" Value="Продано" />
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsSold}" Value="false">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-
-                                </TextBlock>
-
-                                <TextBlock
-                                    Grid.Row="1"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"
-                                    Foreground="Black">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsInStock}" Value="False">
-                                                    <Setter Property="Text" Value="Не в наявності" />
-                                                    <Setter Property="Background" Value="Red" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-
-                                </TextBlock>
-
-                                <Popup
-                                    x:Name="avaliablePopup"
-                                    Width="120"
-                                    Height="40"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Mode=OneWay}"
-                                    Placement="Left">
-                                    <StackPanel Background="LightBlue" Orientation="Vertical">
-
-                                        <CheckBox Content="Наявний?" IsChecked="{Binding IsInStock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                        <Button
-                                            Width="100"
-                                            Margin="5"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Command="{Binding DataContext.DeleteCoinCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}"
-                                            Content="Видалити монету" />
-
-                                    </StackPanel>
-                                </Popup>
-                            </Grid>
-
-                            <DataTemplate.Triggers>
-                                <Trigger SourceName="AvaliableGrid" Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard x:Name="bsb">
-                                            <Storyboard>
-                                                <BooleanAnimationUsingKeyFrames
-                                                    FillBehavior="HoldEnd"
-                                                    Storyboard.TargetName="avaliablePopup"
-                                                    Storyboard.TargetProperty="IsOpen">
-                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="True" />
-                                                </BooleanAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="bsb" />
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    Width="*"
+                    Binding="{Binding Path=SellerInformation}"
+                    ElementStyle="{StaticResource DataGridInfoColumnTextElementStyle}"
+                    Header="Інфо"
+                    IsReadOnly="True" />
 
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>
-
