@@ -31,6 +31,10 @@ namespace CoinsOrganizerDesktop.Database.DatabaseModels
 
         public bool IsPaid { get; set; }
 
+        public bool IsTrackedOnMarket { get; set; }
+
+        public bool IsShipped { get; set; }
+        
         public int CoinId { get; set; }
 
         public virtual Coin Coin { get; set; }

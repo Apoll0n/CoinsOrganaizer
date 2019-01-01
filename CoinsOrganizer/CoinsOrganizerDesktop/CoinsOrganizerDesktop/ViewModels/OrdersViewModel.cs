@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using CoinsOrganizerDesktop.Database.BusinessLogic;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
@@ -15,8 +16,9 @@ namespace CoinsOrganizerDesktop.ViewModels
     public class OrdersViewModel : BaseViewModel
     {
         private BusinessLogic _businessLogic;
-        private ObservableCollection<OrderBL> _orders;
+        private IEnumerable<OrderBL> _orders;
         public OrderBL _selectedRow;
+        private OrdersFilters _selectedOrderFilter;
 
         public OrdersViewModel()
         {
@@ -25,7 +27,105 @@ namespace CoinsOrganizerDesktop.ViewModels
             Orders = new ObservableCollection<OrderBL>(ordersbl);
 
             NewOrder = new NewOrderModel();
+
+            List<OrdersFilters> items = new List<OrdersFilters>();
+            items.Add(new OrdersFilters() {Name = "Всі", Category = "A"});
+            items.Add(new OrdersFilters() {Name = "Оплачені", Category = "B"});
+            items.Add(new OrdersFilters() {Name = "Не оплачені", Category = "B"});
+            items.Add(new OrdersFilters() {Name = "Відправлені", Category = "C"});
+            items.Add(new OrdersFilters() {Name = "Не відправлені", Category = "C"});
+            items.Add(new OrdersFilters() {Name = "Оплачені, не відправлені", Category = "C"});
+            items.Add(new OrdersFilters() {Name = "Трек номер не вказаний", Category = "C"});
+            items.Add(new OrdersFilters() {Name = "Продано на eBay", Category = "D"});
+            items.Add(new OrdersFilters() {Name = "Продано на Allegro", Category = "D"});
+            items.Add(new OrdersFilters() {Name = "Продано іншим чином", Category = "D"});
+
+            ListCollectionView groupedFilters = new ListCollectionView(items);
+            groupedFilters.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
+            OrdersFiltersSource = groupedFilters;
         }
+
+        public OrdersFilters SelectedOrderFilter
+        {
+            get { return _selectedOrderFilter; }
+            set
+            {
+                _selectedOrderFilter = value;
+                FilterOrders(value);
+            }
+        }
+
+        private void FilterOrders(OrdersFilters filter)
+        {
+            IEnumerable<OrderBL> orders = Enumerable.Empty<OrderBL>();
+
+            switch (filter.Name)
+            {
+                case "Всі":
+
+                    orders = _businessLogic.GetOrdersBL();
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Оплачені":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsPaid);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Не оплачені":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => !x.IsPaid);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Відправлені":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsShipped);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Не відправлені":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => !x.IsShipped);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Оплачені, не відправлені":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsPaid && !x.IsShipped);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Трек номер не вказаний":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsTrackedOnMarket);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Продано на eBay":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Ebay);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Продано на Allegro":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Allegro);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                case "Продано іншим чином":
+
+                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Інше);
+                    Orders = new ObservableCollection<OrderBL>(orders);
+
+                    break;
+                default: break;
+            } 
+        }
+
+        public ListCollectionView OrdersFiltersSource { get; set; }
 
         public NewOrderModel NewOrder { get; set; }
 
@@ -60,7 +160,6 @@ namespace CoinsOrganizerDesktop.ViewModels
 
                     var order = new Order
                     {
-                        
                         SaleCurrency = CurrencyHelper.ConvertToSign(NewOrder.Currency),
                         NickName = buyerInfos[0],
                         Email = email,
@@ -183,10 +282,7 @@ namespace CoinsOrganizerDesktop.ViewModels
 
         public OrderBL SelectedRow
         {
-            get
-            {
-                return _selectedRow;
-            }
+            get { return _selectedRow; }
             set
             {
                 _businessLogic.UpdateOrder(_selectedRow);
@@ -194,7 +290,7 @@ namespace CoinsOrganizerDesktop.ViewModels
             }
         }
 
-        public ObservableCollection<OrderBL> Orders
+        public IEnumerable<OrderBL> Orders
         {
             get { return _orders; }
             set
@@ -204,5 +300,11 @@ namespace CoinsOrganizerDesktop.ViewModels
                 OnPropertyChanged(nameof(Orders));
             }
         }
+    }
+
+    public class OrdersFilters
+    {
+        public string Name { get; set; }
+        public string Category { get; set; }
     }
 }

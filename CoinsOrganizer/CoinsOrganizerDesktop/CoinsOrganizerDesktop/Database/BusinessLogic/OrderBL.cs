@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
 using CoinsOrganizerDesktop.Helpers;
+using CoinsOrganizerDesktop.ViewModels.Model;
 
 namespace CoinsOrganizerDesktop.Database.BusinessLogic
 {
@@ -70,21 +71,19 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             get { return string.Format(@"{0}, {1}, {2}", NickName, Email, OrderDetails); } //OrderDetails; }
         }
 
-        private bool _isShipped; // ADD TO DATABASE
-
         public bool IsShipped
         {
-            get { return _isShipped; }
+            get { return OrderDB.IsShipped; }
             set
             {
-                _isShipped = value;
+                OrderDB.IsShipped = value;
 
                 OnPropertyChanged(nameof(IsReadyForShipment));
                 OnPropertyChanged(nameof(IsCompleted));
                 OnPropertyChanged(nameof(HaveNotTrackedYetOnMarket));
                 OnPropertyChanged(nameof(IsShipped));
 
-                if (_isShipped)
+                if (value)
                 {
                     CoinBL.IsInStock = false;
 
@@ -96,14 +95,12 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             }
         }
 
-        private bool _isTrackedOnMarket;
-
         public bool IsTrackedOnMarket
         {
-            get { return _isTrackedOnMarket; }
+            get { return OrderDB.IsTrackedOnMarket; }
             set
             {
-                _isTrackedOnMarket = value;
+                OrderDB.IsTrackedOnMarket = value;
 
                 OnPropertyChanged(nameof(IsReadyForShipment));
                 OnPropertyChanged(nameof(IsCompleted));
@@ -139,10 +136,19 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             set { OrderDB.OrderDetails = value; }
         }
 
-        public string WhereSold
+        public WhereSold WhereSold
         {
-            get { return OrderDB.WhereSold; }
-            set { OrderDB.WhereSold = value; }
+            get
+            {
+                Enum.TryParse(OrderDB.WhereSold, out WhereSold myStatus);
+                return myStatus; 
+                
+            }
+            set
+            {
+                OrderDB.WhereSold = value.ToString(); 
+                
+            }
         }
 
         public string SaleCurrency

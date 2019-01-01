@@ -138,7 +138,7 @@ namespace CoinsOrganizerDesktop.ViewModels
                 return new ActionCommand<CoinBL>((e) =>
                 {
                     var coin = (CoinBL) e;
-                    MessageBoxResult result = MessageBox.Show(string.Format("Видалити {0}?/n{1}", coin.CoinId, coin.Name),
+                    MessageBoxResult result = MessageBox.Show(string.Format(" Видалити?\n{1} ({0})", coin.CoinId, coin.Name),
                         "Confirmation", MessageBoxButton.YesNo);
 
                     if (result == MessageBoxResult.Yes)

@@ -325,7 +325,7 @@
 
         </Grid>
 
-        <DataGrid
+        <DataGrid x:Name="CoinDataGrid"
             Grid.Row="1"
             AutoGenerateColumns="False"
             ItemsSource="{Binding Coins}"
@@ -559,7 +559,7 @@
                                             IsCheckable="True"
                                             IsChecked="{Binding IsInStock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <MenuItem
-                                            Command="{Binding DataContext.DeleteCoinCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            Command="{Binding DataContext.DeleteCoinCommand, Source={x:Reference CoinDataGrid}}"
                                             CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}"
                                             Header="Видалити монету" />
 
@@ -612,7 +612,7 @@
 
                                 </TextBlock>
 
-                                <Popup
+                                <!--<Popup
                                     x:Name="avaliablePopup"
                                     Width="120"
                                     Height="40"
@@ -634,10 +634,10 @@
                                             Content="Видалити монету" />
 
                                     </StackPanel>
-                                </Popup>
+                                </Popup>-->
                             </Grid>
 
-                            <DataTemplate.Triggers>
+                            <!--<DataTemplate.Triggers>
                                 <Trigger SourceName="AvaliableGrid" Property="IsMouseOver" Value="True">
                                     <Trigger.EnterActions>
                                         <BeginStoryboard x:Name="bsb">
@@ -655,7 +655,7 @@
                                         <StopStoryboard BeginStoryboardName="bsb" />
                                     </Trigger.ExitActions>
                                 </Trigger>
-                            </DataTemplate.Triggers>
+                            </DataTemplate.Triggers>-->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
