@@ -339,6 +339,7 @@
                 Width="170"
                 Margin="5"
                 HorizontalAlignment="Center"
+                SelectedIndex="0"
                 ItemsSource="{Binding OrdersFiltersSource}"
                 SelectedItem="{Binding SelectedOrderFilter}">
                 <ComboBox.GroupStyle>

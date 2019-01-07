@@ -44,8 +44,12 @@ namespace CoinsOrganizerDesktop.ViewModels
             groupedFilters.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
             OrdersFiltersSource = groupedFilters;
 
+
             ICollectionView collection = new ListCollectionView(ordersbl);
             Orders = collection;
+
+            SelectedOrderFilter = items[0];
+            collection.Filter = OrderFilter;
         }
 
         public OrdersFilters SelectedOrderFilter
@@ -54,70 +58,66 @@ namespace CoinsOrganizerDesktop.ViewModels
             set
             {
                 _selectedOrderFilter = value;
-                FilterOrders(value);
+                Orders.Refresh();
             }
         }
 
-        private void FilterOrders(OrdersFilters filter)
+        private bool OrderFilter(object obj)
         {
-            IEnumerable<OrderBL> orders = Enumerable.Empty<OrderBL>();
+            bool result = true;
 
-            switch (filter.Name)
+            var order = (OrderBL)obj;
+
+            switch (SelectedOrderFilter.Name)
             {
-                case "Всі":
-
-                    orders = _businessLogic.GetOrdersBL();
-
-                    break;
                 case "Оплачені":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsPaid);
+                    result = order.IsPaid;
 
                     break;
                 case "Не оплачені":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => !x.IsPaid);
+                    result = !order.IsPaid;
 
                     break;
                 case "Відправлені":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsShipped);
+                    result = order.IsShipped;
 
                     break;
                 case "Не відправлені":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => !x.IsShipped);
+                    result = !order.IsShipped;
 
                     break;
                 case "Оплачені, не відправлені":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsPaid && !x.IsShipped);
+                    result = order.IsPaid && !order.IsShipped;
 
                     break;
                 case "Трек номер не вказаний":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.IsTrackedOnMarket);
+                    result = order.IsTrackedOnMarket;
 
                     break;
                 case "Продано на eBay":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Ebay);
+                    result = order.WhereSold == WhereSold.Ebay;
 
                     break;
                 case "Продано на Allegro":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Allegro);
+                    result = order.WhereSold == WhereSold.Allegro;
 
                     break;
                 case "Продано іншим чином":
 
-                    orders = _businessLogic.GetOrdersBL().Where(x => x.WhereSold == WhereSold.Інше);
+                    result = order.WhereSold == WhereSold.Інше;
 
                     break;
                 default: break;
             }
-
-            Orders = new ListCollectionView(orders.ToList());
+            return result;
         }
 
         public ICollectionView OrdersFiltersSource { get; set; }
@@ -180,11 +180,6 @@ namespace CoinsOrganizerDesktop.ViewModels
             {
                 return new ActionCommand<CoinBL>((e) =>
                 {
-                    //_businessLogic.RemoveCoin(((CoinBL)e).CoinId);
-                    //_businessLogic.ApplyChanges();
-
-                    //ChangeTableState(TableState);
-                    //SortTableIndex(SortByDescending);
                 });
             }
         }
