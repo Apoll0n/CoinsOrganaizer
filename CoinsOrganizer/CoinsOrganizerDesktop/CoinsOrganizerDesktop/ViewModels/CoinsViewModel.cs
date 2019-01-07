@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using CoinsOrganizerDesktop.Database.BusinessLogic;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
@@ -28,15 +30,18 @@ namespace CoinsOrganizerDesktop.ViewModels
     {
         private BusinessLogic _businessLogic;
         private CoinBL _selectedRow;
-        private ObservableCollection<CoinBL> _coins;
+        private ICollectionView _coins;
 
         public CoinsViewModel()
         {
             _businessLogic = new BusinessLogic();
-            var coinsbl = _businessLogic.GetCoinsBL().Where(x => x.IsInStock);
-            Coins = new ObservableCollection<CoinBL>(coinsbl);
+            var coinsbl = _businessLogic.GetCoinsBL().ToList();
+            //Coins = new ObservableCollection<CoinBL>(coinsbl);
 
             NewCoin = new NewCoinModel();
+
+            ICollectionView collection = new ListCollectionView(coinsbl);
+            Coins = collection;
 
             //var coinsInStock = coinsbl.Where(w => w.OrderBL == null).Select(x => x.CoinId);
             //var allegroCoins = AllegroService.ActiveList;
@@ -192,6 +197,24 @@ namespace CoinsOrganizerDesktop.ViewModels
             }
         }
 
+        public ICommand GroupCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand<object>((e) =>
+                {
+                    if ((bool) e)
+                    {
+                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link"));
+                    }
+                    else
+                    {
+                        Coins.GroupDescriptions.Clear();
+                    }
+                });
+            }
+        }
+
         public ICommand SortCoinsCommand
         {
             get
@@ -206,35 +229,36 @@ namespace CoinsOrganizerDesktop.ViewModels
 
         public void SortTableIndex(bool byDescending)
         {
-
-            if (byDescending)
-            {
-                Coins = new ObservableCollection<CoinBL>(Coins.OrderByDescending(x => x.CoinId));
-            }
-            else
-            {
-                Coins = new ObservableCollection<CoinBL>(Coins.OrderBy(x => x.CoinId));
-            }
+            Coins.SortDescriptions.Add(new SortDescription("CoinId",
+                byDescending ? ListSortDirection.Descending : ListSortDirection.Ascending));
         }
 
         public void ChangeTableState(CoinTableState state)
         {
-            IEnumerable<CoinBL> coins = Enumerable.Empty<CoinBL>();
+            //IEnumerable<CoinBL> coins = Enumerable.Empty<CoinBL>();
 
-            if (state == CoinTableState.All)
+            //Coins = new ListCollectionView(coins.ToList());
+            Coins.Filter = CoinFilter;
+            Coins.Refresh();
+            OnPropertyChanged(nameof(Coins));
+        }
+
+        private bool CoinFilter(object obj)
+        {
+            bool result = true;
+
+            var coin = (CoinBL) obj;
+
+            if (TableState == CoinTableState.Available)
             {
-                coins = _businessLogic.GetCoinsBL();
+                result = coin.IsInStock;
             }
-            else if (state == CoinTableState.Available)
+            else if (TableState == CoinTableState.Sold)
             {
-                coins = _businessLogic.GetCoinsBL().Where(x => x.IsInStock);
-            }
-            else if (state == CoinTableState.Sold)
-            {
-                coins = _businessLogic.GetCoinsBL().Where(x => x.IsSold);
+                result = coin.IsSold;
             }
 
-            Coins = new ObservableCollection<CoinBL>(coins);
+            return result;
         }
 
         public CoinBL SelectedRow
@@ -250,7 +274,7 @@ namespace CoinsOrganizerDesktop.ViewModels
             }
         }
 
-        public ObservableCollection<CoinBL> Coins
+        public ICollectionView Coins
         {
             get { return _coins; }
             set

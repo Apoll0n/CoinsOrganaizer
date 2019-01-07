@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoinsOrganizerDesktop.Database.DatabaseModels
 {
@@ -36,6 +37,12 @@ namespace CoinsOrganizerDesktop.Database.DatabaseModels
         public bool IsShipped { get; set; }
         
         public int CoinId { get; set; }
+
+        public DateTime? PlacedOnMarketDate { get; set; }
+
+        public DateTime? SoldDate { get; set; }
+
+        public DateTime? PaidDate { get; set; }
 
         public virtual Coin Coin { get; set; }
     }

@@ -89,7 +89,7 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             //}
         }
 
-        public IEnumerable<Coin> GetCoins()
+        public IList<Coin> GetCoins()
         {
             return DB.Coins.ReadAll().ToList();
         }
@@ -99,17 +99,17 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             DB.IsDirty = true;
         }
 
-        public IEnumerable<CoinBL> GetCoinsBL()
+        public IList<CoinBL> GetCoinsBL()
         {
             return DB.CoinsBl;
         }
 
-        public IEnumerable<Order> GetOrders()
+        public IList<Order> GetOrders()
         {
             return DB.Orders.ReadAll().ToList();
         }
 
-        public IEnumerable<OrderBL> GetOrdersBL()
+        public List<OrderBL> GetOrdersBL()
         {
             return DB.OrdersBl;
         }

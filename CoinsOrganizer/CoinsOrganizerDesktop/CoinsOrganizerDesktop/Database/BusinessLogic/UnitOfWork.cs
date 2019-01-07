@@ -13,8 +13,8 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         private CoinsOrganizerContext DataBase { get; }
         private OrderDB _ordersRepository;
         private CoinsDB _coinsRepository;
-        private ObservableCollection<CoinBL> _coinsBl;
-        private ObservableCollection<OrderBL> _ordersBl;
+        private List<CoinBL> _coinsBl;
+        private List<OrderBL> _ordersBl;
 
         public UnitOfWork()
         {
@@ -54,13 +54,13 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             }
         }
 
-        public ObservableCollection<CoinBL> CoinsBl
+        public List<CoinBL> CoinsBl
         {
             get
             {
                 if (_coinsBl == null || IsDirty)
                 {
-                    _coinsBl = new ObservableCollection<CoinBL>();
+                    _coinsBl = new List<CoinBL>();
                     if (_coinsRepository == null)
                     {
                         _coinsRepository = new CoinsDB(DataBase);
@@ -78,13 +78,13 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             }
         }
 
-        public ObservableCollection<OrderBL> OrdersBl
+        public List<OrderBL> OrdersBl
         {
             get
             {
                 if (_ordersBl == null || IsDirty)
                 {
-                    _ordersBl = new ObservableCollection<OrderBL>();
+                    _ordersBl = new List<OrderBL>();
                     if (_ordersRepository == null)
                     {
                         _ordersRepository = new OrderDB(DataBase);

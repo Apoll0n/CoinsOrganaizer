@@ -114,11 +114,17 @@
     <Compile Include="Helpers\ActionCommand.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="Helpers\Converters\EnumValueToStringConverter.cs" />
+    <Compile Include="Helpers\Converters\GroupDataContextToBuyPriceSumConverter.cs" />
+    <Compile Include="Helpers\Converters\GroupDataContextToSellPriceSumConverter.cs" />
     <Compile Include="Helpers\Converters\PriceStringToPriceIntConverter.cs" />
     <Compile Include="Helpers\Extension\EnumValuesExtension.cs" />
     <Compile Include="Migrations\201901012108425_AddTwoProps.cs" />
     <Compile Include="Migrations\201901012108425_AddTwoProps.Designer.cs">
       <DependentUpon>201901012108425_AddTwoProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901022119433_AddedDateTimeProps.cs" />
+    <Compile Include="Migrations\201901022119433_AddedDateTimeProps.Designer.cs">
+      <DependentUpon>201901022119433_AddedDateTimeProps.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CoinsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -188,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901012108425_AddTwoProps.resx">
       <DependentUpon>201901012108425_AddTwoProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901022119433_AddedDateTimeProps.resx">
+      <DependentUpon>201901022119433_AddedDateTimeProps.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

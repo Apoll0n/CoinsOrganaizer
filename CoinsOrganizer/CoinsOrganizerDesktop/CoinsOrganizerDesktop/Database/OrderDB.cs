@@ -46,10 +46,10 @@ namespace CoinsOrganizerDesktop.Database
             _context.Orders.Add(order);
         }
 
-        public void Update(Order coin)
+        public void Update(Order order)
         {
-            _context.Entry(coin).State = EntityState.Modified;
-            Save();
+            _context.Entry(order).State = EntityState.Modified;
+            //Save();
         }
 
         public void Delete(int id)
