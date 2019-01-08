@@ -13,6 +13,7 @@ using System.Windows.Input;
 using CoinsOrganizerDesktop.Database.BusinessLogic;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
 using CoinsOrganizerDesktop.Helpers;
+using CoinsOrganizerDesktop.Helpers.Converters;
 using CoinsOrganizerDesktop.MarketService;
 using CoinsOrganizerDesktop.ViewModels.Model;
 
@@ -41,6 +42,7 @@ namespace CoinsOrganizerDesktop.ViewModels
             NewCoin = new NewCoinModel();
 
             ICollectionView collection = new ListCollectionView(coinsbl);
+            //collection.GroupDescriptions.Add(new PropertyGroupDescription("Link", new CoinsGroupingToExcludeSingleItemConverter()));
             Coins = collection;
 
             //var coinsInStock = coinsbl.Where(w => w.OrderBL == null).Select(x => x.CoinId);
@@ -205,7 +207,7 @@ namespace CoinsOrganizerDesktop.ViewModels
                 {
                     if ((bool) e)
                     {
-                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link"));
+                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link", new CoinsGroupingToExcludeSingleItemConverter()));
                     }
                     else
                     {

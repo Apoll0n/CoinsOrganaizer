@@ -13,11 +13,12 @@
         <TabControl>
             <TabItem Header="Coins">
                 <views:CoinsView />
+                <!--<views:OrdersView />-->
             </TabItem>
             <TabItem Header="Orders">
                 <views:OrdersView />
             </TabItem>
-            <TabItem Header="Details">
+            <TabItem IsSelected="True" Header="Details">
                 <Image Source="https://s3.eu-central-1.amazonaws.com/coinsorganizer/1000.JPG" />
             </TabItem>
         </TabControl>

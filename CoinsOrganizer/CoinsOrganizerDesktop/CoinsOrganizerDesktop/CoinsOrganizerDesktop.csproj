@@ -113,6 +113,7 @@
     <Compile Include="Database\OrderDB.cs" />
     <Compile Include="Helpers\ActionCommand.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
+    <Compile Include="Helpers\Converters\CoinsGroupingToExcludeSingleItemConverter.cs" />
     <Compile Include="Helpers\Converters\EnumValueToStringConverter.cs" />
     <Compile Include="Helpers\Converters\GroupDataContextToBuyPriceSumConverter.cs" />
     <Compile Include="Helpers\Converters\GroupDataContextToSellPriceSumConverter.cs" />

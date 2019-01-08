@@ -46,6 +46,7 @@ namespace CoinsOrganizerDesktop.ViewModels
 
 
             ICollectionView collection = new ListCollectionView(ordersbl);
+            //collection.GroupDescriptions.Add(new PropertyGroupDescription("NickName1"));
             Orders = collection;
 
             SelectedOrderFilter = items[0];
