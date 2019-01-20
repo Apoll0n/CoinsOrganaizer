@@ -1,6 +1,0 @@
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\bin\Debug\netstandard2.0\AllegroWebService.deps.json
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\bin\Debug\netstandard2.0\AllegroWebService.dll
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\obj\Debug\netstandard2.0\AllegroWebService.csprojAssemblyReference.cache
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\obj\Debug\netstandard2.0\AllegroWebService.csproj.CoreCompileInputs.cache
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\obj\Debug\netstandard2.0\AllegroWebService.AssemblyInfoInputs.cache
-C:\asp net core\CoinsOrganizer\CoinsOrganizer\CoinsOrganizer\AllegroWebService\obj\Debug\netstandard2.0\AllegroWebService.AssemblyInfo.cs
