@@ -207,7 +207,7 @@ namespace CoinsOrganizerDesktop.ViewModels
                 {
                     if ((bool) e)
                     {
-                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link", new CoinsGroupingToExcludeSingleItemConverter()));
+                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link"));
                     }
                     else
                     {

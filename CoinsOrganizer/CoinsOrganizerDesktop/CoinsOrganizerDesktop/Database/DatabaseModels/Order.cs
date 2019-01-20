@@ -35,6 +35,8 @@ namespace CoinsOrganizerDesktop.Database.DatabaseModels
         public bool IsTrackedOnMarket { get; set; }
 
         public bool IsShipped { get; set; }
+
+        public bool IsIgnored { get; set; }
         
         public int CoinId { get; set; }
 

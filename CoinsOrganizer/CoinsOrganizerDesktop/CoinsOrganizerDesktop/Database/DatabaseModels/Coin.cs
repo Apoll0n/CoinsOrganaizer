@@ -31,6 +31,8 @@ namespace CoinsOrganizerDesktop.Database.DatabaseModels
 
         public bool IsInStock { get; set; }
 
+        public bool IsIgnored { get; set; }
+
         public string AversFotoLink { get; set; }
 
         public string ReversFotoLink { get; set; }

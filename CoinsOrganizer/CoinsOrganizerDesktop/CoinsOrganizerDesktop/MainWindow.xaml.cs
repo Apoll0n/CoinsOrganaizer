@@ -39,106 +39,48 @@ namespace CoinsOrganizerDesktop
         public MainWindow()
         {
             InitializeComponent();
-            _coinsList = new List<Coin>();
+            //_coinsList = new List<Coin>();
             DataContext = new MainWindowViewModel();
-            _ordersList = new List<Order>();
+            //_ordersList = new List<Order>();
 
 
             //AllegroService.EditItem();
 
-            /*var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
-            using (var db = new CoinsOrganizerContext(connectionString))
-            {
-                var orders = db.Orders;
-                //var coins = db.Coins;
-
-                foreach (var order1 in orders)
-                {
-                    //var order = order1.Coin;
-                    db.Orders.Remove(order1);
-
-                }
-
-                //foreach (var coin1 in coins)
-                //{
-                //    //var coin = coin1.Order;
-                //    //coin.OrderId = Orders
-                //    db.Coins.Remove(coin1);
-
-                //    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
-                //    //if (orderCollection != null && orderCollection.Count()>0)
-                //    //{
-
-                //    //}
-                //}
-                db.SaveChanges();
-            }
-
-            UploadOrders();*/
-
-
-
-
-            /*string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
-            string ApplicationName = "Google Sheets API .NET Quickstart";
-
-            UserCredential credential;
-
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-            {
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-
-            // Create Google Sheets API service.
-            var service = new DriveService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Drive Oauth2 Authentication Sample"
-            });
-
-
-            string pageToken = null;
-            do
-            {
-                var request = service.Files.List();
-                request.Q = "mimeType='image/png'";
-                request.Spaces = "drive";
-                request.Fields = "nextPageToken, files(id, name)";
-                request.PageToken = pageToken;
-                var result = request.Execute();
-                foreach (var file in result.Files)
-                {
-                    Console.WriteLine(String.Format(
-                        "Found file: {0} ({1})", file.Name, file.Id));
-                }
-                pageToken = result.NextPageToken;
-            } while (pageToken != null);*/
-
-
+            //var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
             //using (var db = new CoinsOrganizerContext(connectionString))
             //{
-            //    var coins = db.Coins.OrderBy(x => x.Name);
+            //    var orders = db.Orders;
+            //    //var coins = db.Coins;
 
-            //    foreach (var coin in coins)
+            //    foreach (var order1 in orders)
             //    {
-            //        coin.IsSold = true;
             //        //var order = order1.Coin;
-            //        //db.Orders.Remove(order1);
+            //        db.Orders.Remove(order1);
 
             //    }
+
+            //    //foreach (var coin1 in coins)
+            //    //{
+            //    //    //var coin = coin1.Order;
+            //    //    //coin.OrderId = Orders
+            //    //    db.Coins.Remove(coin1);
+
+            //    //    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
+            //    //    //if (orderCollection != null && orderCollection.Count()>0)
+            //    //    //{
+
+            //    //    //}
+            //    //}
             //    db.SaveChanges();
             //}
-            //var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
-            //var db = new CoinsOrganizerContext(connectionString);
-            /* using (var db = new CoinsOrganizerContext(connectionString))
+
+            //UploadOrders();
+
+
+
+
+
+           /* using (var db = new CoinsOrganizerContext(connectionString))
              {
 
                  //var coin = new Coin() { CoinId = 2, Cost = 11, Name = "Poltorak1", Link = "link" };
@@ -175,36 +117,36 @@ namespace CoinsOrganizerDesktop
                  //db.Orders.Add(order2);
                  //db.SaveChanges();
 
-                 var orders = db.Orders.OrderBy(x => x.Name);
-                 var coins = db.Coins.OrderBy(x => x.Name);
+                 var orders = db.Orders.OrderBy(x => x.OrderId);
+                 var coins = db.Coins.OrderBy(x => x.CoinId);
 
                  foreach (var order1 in orders)
                  {
-                     //var order = order1.Coin;
-                     //db.Orders.Remove(order1);
+                    //var order = order1.Coin;
+                    db.Orders.Remove(order1);
 
-                 }
+                }
                  db.SaveChanges();
 
                  foreach (var coin1 in coins)
                  {
-                     //var coin = coin1.Order;
-                     //coin.OrderId = Orders
-                     //db.Coins.Remove(coin1);
+                    //var coin = coin1.Order;
+                    //coin.OrderId = Orders
+                    db.Coins.Remove(coin1);
 
-                     //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
-                     //if (orderCollection != null && orderCollection.Count()>0)
-                     //{
+                    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
+                    //if (orderCollection != null && orderCollection.Count()>0)
+                    //{
 
-                     //}
-                 }
+                    //}
+                }
                  db.SaveChanges();
-             }
+             }*/
 
-             //CheckAllegroIndexes();
+            //CheckAllegroIndexes();
 
-             UploadCoins();
-             UploadOrders();*/
+            //UploadCoins();
+            //UploadOrders();
         }
 
         private void CheckAllegroIndexes()
@@ -270,7 +212,11 @@ namespace CoinsOrganizerDesktop
 
             // Define request parameters.
             String spreadsheetId = "13Hh_x_kU9BhBryuIwwGvB6r0PpztjZaVu8y5-5BbeTk";
-            String range = "'Висилка'!A2:I1411";
+            String range = "'Висилка'!A2:I1714";
+
+            //SpreadsheetsResource.ValuesResource.AppendRequest request2 = service.Spreadsheets.Values.Append(new ValueRange(){}, spreadsheetId, "'Sheet27'!A2:I1714")
+                //service.Spreadsheets.Values.Get(spreadsheetId, range);
+
             SpreadsheetsResource.ValuesResource.GetRequest request =
                 service.Spreadsheets.Values.Get(spreadsheetId, range);
 
@@ -310,12 +256,18 @@ namespace CoinsOrganizerDesktop
                             if (row[4].ToString() != "")
                             {
                                 soldprice = double.Parse(row[4].ToString().Replace(" zł", "").Replace(" ", "")
-                                    .Replace("грн", "").Replace(",", "")
+                                    .Replace("грн.", "").Replace(",", "")
                                     .Replace("$", ""));
                             }
 
                             var trackNumber = row[5].ToString();
-                            var orderdetails = row[6].ToString() + " " + row[7].ToString();
+                            var orderdetails =
+                                nickname + System.Environment.NewLine + email + row[6].ToString() == String.Empty
+                                    ? ""
+                                    : System.Environment.NewLine + row[6].ToString() +
+                                      row[7].ToString() == String.Empty
+                                        ? ""
+                                        : System.Environment.NewLine + row[7].ToString();
                             //double dollarPrice = 0d;
                             //if (row[11].ToString() != "")
                             //{
@@ -348,8 +300,10 @@ namespace CoinsOrganizerDesktop
                                 Name = title,
                                 SalePrice = soldprice,
                                 SaleCurrency = isZloty ? "zł" : isUah ? "UAH" : "$",
-                                WhereSold = isZloty ? "Allegro" : isUah ? "в руки" : "Ebay",
-                                Link = string.Empty
+                                WhereSold = isZloty ? "Allegro" : isUah ? "Інше" : "Ebay",
+                                Link = string.Empty,
+                                IsShipped = paid,
+                                IsTrackedOnMarket = true
                                 //CoinId = index,
                                 //Name = title,
                                 //Cost = price,
@@ -373,14 +327,22 @@ namespace CoinsOrganizerDesktop
                         {
 
                         }
+
+                        if (order.CoinId == -1)
+                        {
+                            
+                        }
+
+                        var coinsCount = db.Coins.Count();
                         if (order != null && db.Coins.Any(x => x.CoinId.Equals(order.CoinId)) && order.Name != null &&
                             !order.Name.Equals(""))
                         {
-                            _ordersList.Add(order);
+                            //_ordersList.Add(order);
                             db.Orders.Add(order);
                             //using (var db = new BusinessLogic.BusinessLogic())
                             //    db.AddOrder(Mapper.Map<OrderBL>(order));
                         }
+                        else { }
                     }
 
                     db.SaveChanges();
@@ -418,7 +380,7 @@ namespace CoinsOrganizerDesktop
             // Define request parameters.
             String spreadsheetId = "13Hh_x_kU9BhBryuIwwGvB6r0PpztjZaVu8y5-5BbeTk";
             //String range = "New!A1351:N1355";
-            String range = "New!A2:N2144";
+            String range = "Sheet28!A2:N2523";
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(spreadsheetId, range);
 
@@ -488,7 +450,8 @@ namespace CoinsOrganizerDesktop
                                 EnglishName = englishName,
                                 IsInStock = isInStock,
                                 AversFotoLink = avers,
-                                ReversFotoLink = revers
+                                ReversFotoLink = revers,
+                                IsSold = isInStock
                             };
                         }
                         else
@@ -501,7 +464,7 @@ namespace CoinsOrganizerDesktop
                         }
                         if (coin != null /*&& db.Orders.Any(x => x.CoinId.Equals(coin.CoinId))*/)
                         {
-                            _coinsList.Add(coin);
+                            //_coinsList.Add(coin);
                             db.Coins.Add(coin);
                             //db.SaveChanges();
                         }

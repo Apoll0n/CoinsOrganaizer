@@ -68,37 +68,41 @@ namespace CoinsOrganizerDesktop.ViewModels
             bool result = true;
 
             var order = (OrderBL)obj;
+            if (!order.IsPaid)
+            {
+                
+            }
 
             switch (SelectedOrderFilter.Name)
             {
                 case "Оплачені":
 
-                    result = order.IsPaid;
+                    result = order.IsPaid && !order.IsIgnored; ;
 
                     break;
                 case "Не оплачені":
 
-                    result = !order.IsPaid;
+                    result = !order.IsPaid && !order.IsIgnored; ;
 
                     break;
                 case "Відправлені":
 
-                    result = order.IsShipped;
+                    result = order.IsShipped && !order.IsIgnored;
 
                     break;
                 case "Не відправлені":
 
-                    result = !order.IsShipped;
+                    result = !order.IsShipped && !order.IsIgnored; ;
 
                     break;
                 case "Оплачені, не відправлені":
 
-                    result = order.IsPaid && !order.IsShipped;
+                    result = order.IsPaid && !order.IsShipped && !order.IsIgnored; ;
 
                     break;
                 case "Трек номер не вказаний":
 
-                    result = order.IsTrackedOnMarket;
+                    result = !order.IsTrackedOnMarket && !order.IsIgnored;
 
                     break;
                 case "Продано на eBay":

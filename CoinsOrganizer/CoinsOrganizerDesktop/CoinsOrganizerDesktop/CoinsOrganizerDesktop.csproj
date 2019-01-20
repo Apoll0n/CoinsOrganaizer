@@ -127,6 +127,14 @@
     <Compile Include="Migrations\201901022119433_AddedDateTimeProps.Designer.cs">
       <DependentUpon>201901022119433_AddedDateTimeProps.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901121412477_AddedIsIgnoredProperty.cs" />
+    <Compile Include="Migrations\201901121412477_AddedIsIgnoredProperty.Designer.cs">
+      <DependentUpon>201901121412477_AddedIsIgnoredProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901121418192_AddedIsIgnoredPropertyToOrderTable.cs" />
+    <Compile Include="Migrations\201901121418192_AddedIsIgnoredPropertyToOrderTable.Designer.cs">
+      <DependentUpon>201901121418192_AddedIsIgnoredPropertyToOrderTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CoinsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Model\Currency.cs" />
@@ -198,6 +206,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901022119433_AddedDateTimeProps.resx">
       <DependentUpon>201901022119433_AddedDateTimeProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901121412477_AddedIsIgnoredProperty.resx">
+      <DependentUpon>201901121412477_AddedIsIgnoredProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901121418192_AddedIsIgnoredPropertyToOrderTable.resx">
+      <DependentUpon>201901121418192_AddedIsIgnoredPropertyToOrderTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

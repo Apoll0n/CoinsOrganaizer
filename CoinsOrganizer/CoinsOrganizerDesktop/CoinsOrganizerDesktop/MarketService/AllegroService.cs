@@ -64,83 +64,141 @@ namespace CoinsOrganizerDesktop.MarketService
 
         public static void EditItem()
         {
-            var editCopyItem = ActiveList.Single(x => x.itemId == 7658160599);
+            var editCopyItem = ActiveList.Single(x => x.itemId == 7776239914);
             AfterSalesServiceConditionsStruct afterSalesServiceConditionsStruct;
-            string additionalServicesGroup; 
-             var copyItemFields = _apiContext.doGetItemFields(_login, editCopyItem.itemId, out afterSalesServiceConditionsStruct, out additionalServicesGroup);
-            //copyItemFields.;
-            //var copyItemFields2 =
-            //    _apiContext.doSellSomeAgain()
+            string additionalServicesGroup;
 
-            //FieldsValue fsValu = copyItemFields.SingleOrDefault(x => x.fid == 6);
-            var fieldsList = new List<FieldsValue>();
-            var ignoreId = new int[] {311, 1, 24, 337, 2, 3, 4, 5, 6, 12, 15, 16, 17, 18, 19, 28, 29, 30, 33, 34, 340, 341,10};
-            foreach (var copyItemField in copyItemFields)
+            foreach (var sellItemStruct in ActiveList)
             {
-                if (copyItemField.fvalueFloat == 9.4f)
-                {
-                    
-                }
-
-                if (copyItemField.fvalueFloat == 18f)
+                if (sellItemStruct.itemEndTimeLeft != "Zakończona")
                 {
 
-                }
-                if (copyItemField.fvalueFloat != 0f)
-                {
+                    var copyItemFields = _apiContext.doGetItemFields(_login, sellItemStruct.itemId,
+                        out afterSalesServiceConditionsStruct, out additionalServicesGroup);
 
-                }
-                if (!ignoreId.Any(x=>x.Equals(copyItemField.fid)))
-                {
-                    fieldsList.Add(copyItemField);
+                    var titleField = copyItemFields[0];
+
+                    var ind = titleField.fvalueString.LastIndexOf("(", StringComparison.InvariantCulture);
+                    if (ind != -1 && titleField.fvalueString.LastIndexOf("*", StringComparison.Ordinal) + 1 != ind)
+                    {
+
+                    copyItemFields[0].fvalueString = titleField.fvalueString.Insert(ind, "*");
+
+
+                    var firstEdit = _apiContext.doChangeItemFields(_login, sellItemStruct.itemId,
+                        new FieldsValue[]
+                        {
+                            copyItemFields[0]
+
+                        }
+                        , null, 0, null, null, null, null);
+                    }
+
                 }
             }
+            //titleField.fvalueString =
 
 
-            //fsValu.fvalueFloat = 14.99f;
-            //var editTargetItem = ActiveList.Single(x => x.itemId == 7655838679);
+            //    var ind = titleField.fvalueString.LastIndexOf("(", StringComparison.InvariantCulture);
+            //copyItemFields[0].fvalueString =
+            //    titleField.fvalueString.Insert(ind + 1, "i"); //suSubstring(ind).Replace(")", "").Replace("(", "");
+            //copyItemFields[0].fvalueString =
+            //    titleField.fvalueString.Insert(ind, "*");
 
-             var copyItemFields22 = _apiContext.doGetItemFields(_login, 7655838679, out afterSalesServiceConditionsStruct, out additionalServicesGroup);
-            //foreach (var copyItemField in copyItemFields22)
-            //{
-            //    if (copyItemField.fvalueFloat == 9.4f)
+
+            //var firstEdit = _apiContext.doChangeItemFields(_login, 7776239914,
+            //    new FieldsValue[]
             //    {
+            //        copyItemFields[0]
 
             //    }
-
-            //    if (copyItemField.fvalueFloat == 18f)
-            //    {
-
-            //    }
-            //    if (copyItemField.fvalueFloat != 0f)
-            //    {
-
-            //    }
-            //}
-            var firstEdit = _apiContext.doChangeItemFields(_login, 7659041028,
-                //new FieldsValue[]
-                //{
-                //    //fsValu
-                //    //new FieldsValue{fid = 6, fvalueFloat = 14.99f},
-                //    //new FieldsValue{fid = 29, fvalueInt = 0},
-
-                //}
-                fieldsList.ToArray()
-                , new int[] {43, 143, 243 }, 0, null, null, null, null);
-
-
-            SaveAsBinaryFormat(fieldsList, @"SaveTemplates\default_fields.dat");
-            var dfsdf =LoadFromBinaryFile<List<FieldsValue>>(new DirectoryInfo(@"SaveTemplates").FullName + @"\default_fields.dat");
-
-            //foreach (var file in
-            //    new DirectoryInfo(@"SaveTemplates")..EnumerateFiles(string.Format(@"{0}.dat", templateSaveAsName),
-            //        SearchOption.AllDirectories))
-            //{
-            //    var loadTemplate = (AspectsTemplateModel)LoadFromBinaryFile<AspectsTemplateModel>(file.FullName);
-            //    AspectsTemplates.Add(new AspectsTemplateModel(file.Name.Replace(file.Extension, ""),
-            //        loadTemplate.Aspects, loadTemplate.CategoryId, loadTemplate.TemplateName, loadTemplate.Uniquekey));
-            //}
+            //    , null, 0, null, null, null, null);
         }
+        //var firstEdit = _apiContext.doChangeItemFields(_login, 7659041028,
+        //    new FieldsValue[]
+        //    {
+        //        //fsValu
+        //        new FieldsValue{fid = 6, fvalueFloat = 14.99f},
+        //        new FieldsValue{fid = 29, fvalueInt = 0},
+
+        //    }
+        //    //fieldsList.ToArray()
+        //    , new int[] {43, 143, 243 }, 0, null, null, null, null);
+
+
+        //copyItemFields.;
+        //var copyItemFields2 =
+        //    _apiContext.doSellSomeAgain()
+
+        //FieldsValue fsValu = copyItemFields.SingleOrDefault(x => x.fid == 6);
+        //var fieldsList = new List<FieldsValue>();
+        //var ignoreId = new int[] {311, 1, 24, 337, 2, 3, 4, 5, 6, 12, 15, 16, 17, 18, 19, 28, 29, 30, 33, 34, 340, 341,10};
+        //foreach (var copyItemField in copyItemFields)
+        //{
+        //    if (copyItemField.fvalueFloat == 9.4f)
+        //    {
+
+        //    }
+
+        //    if (copyItemField.fvalueFloat == 18f)
+        //    {
+
+        //    }
+        //    if (copyItemField.fvalueFloat != 0f)
+        //    {
+
+        //    }
+        //    if (!ignoreId.Any(x=>x.Equals(copyItemField.fid)))
+        //    {
+        //        fieldsList.Add(copyItemField);
+        //    }
+        //}
+
+
+        //fsValu.fvalueFloat = 14.99f;
+        //var editTargetItem = ActiveList.Single(x => x.itemId == 7655838679);
+
+        //var copyItemFields22 = _apiContext.doGetItemFields(_login, 7776239914, out afterSalesServiceConditionsStruct, out additionalServicesGroup);
+        //foreach (var copyItemField in copyItemFields22)
+        //{
+        //    if (copyItemField.fvalueFloat == 9.4f)
+        //    {
+
+        //    }
+
+        //    if (copyItemField.fvalueFloat == 18f)
+        //    {
+
+        //    }
+        //    if (copyItemField.fvalueFloat != 0f)
+        //    {
+
+        //    }
+        //}
+        //var firstEdit = _apiContext.doChangeItemFields(_login, 7659041028,
+        //    new FieldsValue[]
+        //    {
+        //        //fsValu
+        //        new FieldsValue{fid = 6, fvalueFloat = 14.99f},
+        //        new FieldsValue{fid = 29, fvalueInt = 0},
+
+        //    }
+        //    //fieldsList.ToArray()
+        //    , new int[] {43, 143, 243 }, 0, null, null, null, null);
+
+
+        //SaveAsBinaryFormat(fieldsList, @"SaveTemplates\default_fields.dat");
+        //var dfsdf =LoadFromBinaryFile<List<FieldsValue>>(new DirectoryInfo(@"SaveTemplates").FullName + @"\default_fields.dat");
+
+        //foreach (var file in
+        //    new DirectoryInfo(@"SaveTemplates")..EnumerateFiles(string.Format(@"{0}.dat", templateSaveAsName),
+        //        SearchOption.AllDirectories))
+        //{
+        //    var loadTemplate = (AspectsTemplateModel)LoadFromBinaryFile<AspectsTemplateModel>(file.FullName);
+        //    AspectsTemplates.Add(new AspectsTemplateModel(file.Name.Replace(file.Extension, ""),
+        //        loadTemplate.Aspects, loadTemplate.CategoryId, loadTemplate.TemplateName, loadTemplate.Uniquekey));
+        //}
+        //}
 
         private static void SaveAsBinaryFormat(object objGraph, string fileName)
         {
@@ -209,6 +267,16 @@ namespace CoinsOrganizerDesktop.MarketService
             var duplicates = indexes
                 .GroupBy(i => i.Index)
                 .Where(g => g.Count() > 1);
+
+
+
+            foreach (var sellItemStruct in ActiveList)
+            {
+                if (sellItemStruct.itemBiddersCounter>0)
+                {
+                    
+                }
+            }
             //.Select(g => g.Key);
 
         }

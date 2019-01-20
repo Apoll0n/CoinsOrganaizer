@@ -394,6 +394,15 @@
                                 Height="35"
                                 Margin="-1"
                                 Background="Red">
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem
+                                            Header="Ігнорується?"
+                                            IsCheckable="True"
+                                            IsChecked="{Binding IsIgnored, Mode=TwoWay}" />
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -492,8 +501,8 @@
                                                 Header="Відправлено"
                                                 IsCheckable="True"
                                                 IsChecked="{Binding IsShipped, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                                            <!--IsEnabled="{Binding IsShipped}"-->
                                             <MenuItem
-                                                IsEnabled="{Binding IsShipped}"
                                                 Header="Вказано на сайті"
                                                 IsCheckable="True"
                                                 IsChecked="{Binding IsTrackedOnMarket, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />

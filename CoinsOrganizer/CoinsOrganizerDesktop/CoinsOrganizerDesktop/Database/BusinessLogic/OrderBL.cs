@@ -54,6 +54,12 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             set { OrderDB.Email = value; }
         }
 
+        public bool IsIgnored
+        {
+            get { return OrderDB.IsIgnored; }
+            set { OrderDB.IsIgnored = value; }
+        }
+
         public double SalePrice
         {
             get { return OrderDB.SalePrice; }
