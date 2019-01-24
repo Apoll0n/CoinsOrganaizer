@@ -21,6 +21,7 @@ namespace CoinsOrganizerDesktop.MarketService
         private static string _login = null;
         private static DispatcherTimer _timer = null;
         private static Timer _timer2 = null;
+        private static readonly SellItemStruct _emptyItem = new SellItemStruct { itemId = -1};
 
         public static List<SellItemStruct> ActiveList { get; set; }
         public static List<SoldItemStruct> SoldList { get; set; }
@@ -55,6 +56,19 @@ namespace CoinsOrganizerDesktop.MarketService
 
                 //CheckDublicates();
             }
+        }
+
+        public static int GetItemCountById(int index)
+        {
+            var count = ActiveList.Count(x => x.itemTitle.Contains("*(" + index + ")"));
+            return count;
+        }
+
+        public static SellItemStruct GetItemById(int index)
+        {
+            var item = ActiveList.FirstOrDefault(x => x.itemTitle.Contains("*(" + index + ")"));
+
+            return item ?? _emptyItem;
         }
 
         private static void Callback(object state)

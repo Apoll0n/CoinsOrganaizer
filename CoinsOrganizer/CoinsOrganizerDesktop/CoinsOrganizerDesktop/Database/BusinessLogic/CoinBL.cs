@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoinsOrganizerDesktop.AllegroWebApiService;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
+using CoinsOrganizerDesktop.MarketService;
 
 namespace CoinsOrganizerDesktop.Database.BusinessLogic
 {
@@ -23,13 +25,55 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         private string _aversFotoLink;
         private string _reversFotoLink;
         private int _orderId;
+        private SellItemStruct _allegroItem;
 
         public CoinBL(Coin coin)
         {
             CoinDB = coin;
+            _allegroItem = AllegroService.GetItemById(coin.CoinId);
         }
 
         public Coin CoinDB { get; set; }
+
+        public bool IsOnAllegroSale
+        {
+            get { return _allegroItem.itemId == -1; }
+        }
+
+        public string AllegroItemLink
+        {
+            get { return "https://allegro.pl/oferta/" + _allegroItem.itemId; }
+        }
+
+        public DateTime AllegroItemEndTime
+        {
+            get { return new DateTime(_allegroItem.itemEndTime); }
+        }
+
+        public string AllegroItemTitle
+        {
+            get { return _allegroItem.itemTitle; }
+        }
+
+        public int AllegroItemViewsCount
+        {
+            get { return _allegroItem.itemViewsCounter; }
+        }
+
+        public int AllegroItemWatchersCount
+        {
+            get { return _allegroItem.itemWatchersCounter; }
+        }
+
+        public int AllegroItemBiddersCount
+        {
+            get { return _allegroItem.itemBiddersCounter; }
+        }
+
+        public string AllegroItemHighBidderLogin
+        {
+            get { return _allegroItem.itemHighestBidder.userLogin; }
+        }
 
         public int CoinId
         {

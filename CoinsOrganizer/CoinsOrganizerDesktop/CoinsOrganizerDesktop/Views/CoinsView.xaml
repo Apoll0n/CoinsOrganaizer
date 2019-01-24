@@ -114,7 +114,7 @@
                             </Grid.ColumnDefinitions>-->
 
                             <TextBlock Margin="5" Text="{Binding Name}" />
-                            
+
                             <Border
                                 Grid.Row="1"
                                 Margin="5,5,0,5"
@@ -363,15 +363,15 @@
                     Width="120"
                     Command="{Binding SortCoinsCommand}"
                     CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
-                    Content="Сорт від більшого"/>
-                
+                    Content="Сорт від більшого" />
+
                 <ToggleButton
                     Width="120"
-                    Margin="5 0 0 0"
+                    Margin="5,0,0,0"
                     Command="{Binding GroupCoinsCommand}"
                     CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                     Content="Групувати" />
-                
+
             </StackPanel>
 
         </Grid>
@@ -542,7 +542,13 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
                                 <TextBox
+                                    Grid.RowSpan="2"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     HorizontalContentAlignment="Right"
@@ -553,6 +559,7 @@
                                     Text="{Binding ZlotyPrice, Mode=TwoWay, StringFormat={}{0}zł, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
 
                                 <TextBox
+                                    Grid.Row="0"
                                     Grid.Column="1"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
@@ -562,6 +569,13 @@
                                     Foreground="Black"
                                     Text="{Binding PolishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     TextWrapping="Wrap" />
+
+                                <TextBlock Grid.Row="1" Grid.Column="1">
+                                    <Hyperlink NavigateUri="{Binding AllegroItemLink}" RequestNavigate="Hyperlink_RequestNavigate">
+                                        <TextBlock Text="{Binding AllegroItemTitle}" />
+                                    </Hyperlink>
+                                </TextBlock>
+
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
