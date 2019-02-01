@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CoinsOrganizerDesktop.AllegroWebApiService;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
+using CoinsOrganizerDesktop.Helpers;
 using CoinsOrganizerDesktop.MarketService;
 
 namespace CoinsOrganizerDesktop.Database.BusinessLogic
 {
-    public class CoinBL
+    public class CoinBL : BaseViewModel
     {
         private int _coinId;
         private string _name;
@@ -26,94 +27,98 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         private string _reversFotoLink;
         private int _orderId;
         private SellItemStruct _allegroItem;
+        private int _allegroOnSaleCount;
 
         public CoinBL(Coin coin)
         {
             CoinDB = coin;
-            _allegroItem = AllegroService.GetItemById(coin.CoinId);
+            UpdateAllegroData();
+        }
+
+        public void UpdateAllegroData()
+        {
+            _allegroItem = AllegroService.GetItemById(CoinDB.CoinId);
+            _allegroOnSaleCount = AllegroService.GetItemCountById(CoinDB.CoinId);
+            
+            OnPropertyChanged(nameof(HasSuperfluousItemOnAllegroSale));
+            OnPropertyChanged(nameof(IsOnAllegroSale));
+            OnPropertyChanged(nameof(AllegroItemLink));
+            OnPropertyChanged(nameof(AllegroItemEndTime));
+            OnPropertyChanged(nameof(AllegroItemTitle));
+            OnPropertyChanged(nameof(AllegroItemViewsCount));
+            OnPropertyChanged(nameof(AllegroItemWatchersCount));
+            OnPropertyChanged(nameof(AllegroItemBiddersCount));
+            OnPropertyChanged(nameof(AllegroItemHighBidderLogin));
         }
 
         public Coin CoinDB { get; set; }
 
-        public bool IsOnAllegroSale
-        {
-            get { return _allegroItem.itemId == -1; }
-        }
+        public bool HasSuperfluousItemOnAllegroSale => _allegroOnSaleCount > 1;
 
-        public string AllegroItemLink
-        {
-            get { return "https://allegro.pl/oferta/" + _allegroItem.itemId; }
-        }
+        public bool IsOnAllegroSale => _allegroItem.itemId != -1;
 
-        public DateTime AllegroItemEndTime
-        {
-            get { return new DateTime(_allegroItem.itemEndTime); }
-        }
+        public string AllegroItemLink => "https://allegro.pl/oferta/" + _allegroItem.itemId;
+        public string AllegroItemHighBidderUserLink => "https://allegro.pl/uzytkownik/" + AllegroItemHighBidderLogin;
+        
+        public TimeSpan AllegroItemEndTime =>
+            (DateTimeOffset.FromUnixTimeSeconds(_allegroItem.itemEndTime).LocalDateTime - DateTime.Now);
+        public DateTime AllegroItemEndTime2 => DateTimeOffset.FromUnixTimeSeconds(_allegroItem.itemEndTime).LocalDateTime; //new DateTime().AddSeconds(_allegroItem.itemEndTime).ToLocalTime();
 
-        public string AllegroItemTitle
-        {
-            get { return _allegroItem.itemTitle; }
-        }
+        public string AllegroItemTitle => _allegroItem.itemTitle;
 
-        public int AllegroItemViewsCount
-        {
-            get { return _allegroItem.itemViewsCounter; }
-        }
+        public int AllegroItemViewsCount => _allegroItem.itemViewsCounter;
 
-        public int AllegroItemWatchersCount
-        {
-            get { return _allegroItem.itemWatchersCounter; }
-        }
+        public int AllegroItemWatchersCount => _allegroItem.itemWatchersCounter;
 
-        public int AllegroItemBiddersCount
-        {
-            get { return _allegroItem.itemBiddersCounter; }
-        }
+        public int AllegroItemBiddersCount => _allegroItem.itemBiddersCounter;
 
-        public string AllegroItemHighBidderLogin
-        {
-            get { return _allegroItem.itemHighestBidder.userLogin; }
-        }
+        public string AllegroItemInfo => string.Format("{3} {2} Of, {1} Obs, {0} Wiz, {4} {5}:{6}",
+            AllegroItemViewsCount,
+            AllegroItemWatchersCount, AllegroItemBiddersCount, AllegroItemHighBidderLogin,
+            AllegroItemEndTime.Days.Equals(0) ? string.Empty : AllegroItemEndTime.Days + "дн",
+            AllegroItemEndTime.Hours, AllegroItemEndTime.Minutes);
+
+        public string AllegroItemHighBidderLogin => _allegroItem.itemHighestBidder?.userLogin;//_allegroItem.itemHighestBidder != null ? _allegroItem.itemHighestBidder.userLogin : string.Empty;
 
         public int CoinId
         {
-            get { return CoinDB.CoinId; }
-            private set { CoinDB.CoinId = value; }
+            get => CoinDB.CoinId;
+            private set => CoinDB.CoinId = value;
         }
 
         public string Name
         {
-            get { return CoinDB.Name; }
-            set { CoinDB.Name = value; }
+            get => CoinDB.Name;
+            set => CoinDB.Name = value;
         }
 
         public double Cost
         {
-            get { return CoinDB.Cost; }
-            private set { CoinDB.Cost = value; }
+            get => CoinDB.Cost;
+            set => CoinDB.Cost = value;
         }
 
         public string Link  
         {
-            get { return CoinDB.Link; }
-            set { CoinDB.Link = value; }
+            get => CoinDB.Link;
+            set => CoinDB.Link = value;
         }
 
         public string PolishName    
         {
-            get { return CoinDB.PolishName; }
-            set { CoinDB.PolishName = value; }
+            get => CoinDB.PolishName;
+            set => CoinDB.PolishName = value;
         }
 
         public string EnglishName       
         {
-            get { return CoinDB.EnglishName; }
-            set { CoinDB.EnglishName = value; }
+            get => CoinDB.EnglishName;
+            set => CoinDB.EnglishName = value;
         }
 
         public double ZlotyPrice    
         {
-            get { return CoinDB.ZlotyPrice; }
+            get => CoinDB.ZlotyPrice;
             set
             {
                 if (!value.Equals(-1))
@@ -125,7 +130,7 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public double DollarPrice
         {
-            get { return CoinDB.DollarPrice; }
+            get => CoinDB.DollarPrice;
             set
             {
                 if (!value.Equals(-1))
@@ -137,26 +142,26 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public bool IsSold
         {
-            get { return OrderBL != null && OrderBL.IsPaid; }
-            set { CoinDB.IsSold = value; }
+            get => OrderBL != null && OrderBL.IsPaid;
+            set => CoinDB.IsSold = value;
         }
 
         public bool IsInStock   
         {
-            get { return CoinDB.IsInStock; }
-            set { CoinDB.IsInStock = value; }
+            get => CoinDB.IsInStock;
+            set => CoinDB.IsInStock = value;
         }
 
         public string AversFotoLink 
         {
-            get { return CoinDB.AversFotoLink; }
-            set { CoinDB.AversFotoLink = value; }
+            get => CoinDB.AversFotoLink;
+            set => CoinDB.AversFotoLink = value;
         }
 
         public string ReversFotoLink    
         {
-            get { return CoinDB.ReversFotoLink; }
-            set { CoinDB.ReversFotoLink = value; }
+            get => CoinDB.ReversFotoLink;
+            set => CoinDB.ReversFotoLink = value;
         }
 
         public OrderBL OrderBL { get; set; }

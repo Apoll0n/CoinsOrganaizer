@@ -61,6 +61,11 @@ namespace CoinsOrganizerDesktop.MarketService
         public static int GetItemCountById(int index)
         {
             var count = ActiveList.Count(x => x.itemTitle.Contains("*(" + index + ")"));
+
+            if (count > 1)
+            {
+                
+            }
             return count;
         }
 

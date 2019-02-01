@@ -19,7 +19,7 @@ namespace CoinsOrganizerDesktop.ViewModels
         private BusinessLogic _businessLogic;
         private ICollectionView _orders;
         public OrderBL _selectedRow;
-        private OrdersFilters _selectedOrderFilter;
+        private ItemsFilters _selectedItemFilter;
 
         public OrdersViewModel()
         {
@@ -28,17 +28,17 @@ namespace CoinsOrganizerDesktop.ViewModels
 
             NewOrder = new NewOrderModel();
 
-            List<OrdersFilters> items = new List<OrdersFilters>();
-            items.Add(new OrdersFilters() {Name = "Всі", Category = "A"});
-            items.Add(new OrdersFilters() {Name = "Оплачені", Category = "B"});
-            items.Add(new OrdersFilters() {Name = "Не оплачені", Category = "B"});
-            items.Add(new OrdersFilters() {Name = "Відправлені", Category = "C"});
-            items.Add(new OrdersFilters() {Name = "Не відправлені", Category = "C"});
-            items.Add(new OrdersFilters() {Name = "Оплачені, не відправлені", Category = "C"});
-            items.Add(new OrdersFilters() {Name = "Трек номер не вказаний", Category = "C"});
-            items.Add(new OrdersFilters() {Name = "Продано на eBay", Category = "D"});
-            items.Add(new OrdersFilters() {Name = "Продано на Allegro", Category = "D"});
-            items.Add(new OrdersFilters() {Name = "Продано іншим чином", Category = "D"});
+            List<ItemsFilters> items = new List<ItemsFilters>();
+            items.Add(new ItemsFilters() {Name = "Всі", Category = "A"});
+            items.Add(new ItemsFilters() {Name = "Оплачені", Category = "B"});
+            items.Add(new ItemsFilters() {Name = "Не оплачені", Category = "B"});
+            items.Add(new ItemsFilters() {Name = "Відправлені", Category = "C"});
+            items.Add(new ItemsFilters() {Name = "Не відправлені", Category = "C"});
+            items.Add(new ItemsFilters() {Name = "Оплачені, не відправлені", Category = "C"});
+            items.Add(new ItemsFilters() {Name = "Трек номер не вказаний", Category = "C"});
+            items.Add(new ItemsFilters() {Name = "Продано на eBay", Category = "D"});
+            items.Add(new ItemsFilters() {Name = "Продано на Allegro", Category = "D"});
+            items.Add(new ItemsFilters() {Name = "Продано іншим чином", Category = "D"});
 
             ICollectionView groupedFilters = new ListCollectionView(items);
             groupedFilters.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
@@ -49,16 +49,16 @@ namespace CoinsOrganizerDesktop.ViewModels
             //collection.GroupDescriptions.Add(new PropertyGroupDescription("NickName1"));
             Orders = collection;
 
-            SelectedOrderFilter = items[0];
+            SelectedItemFilter = items[0];
             collection.Filter = OrderFilter;
         }
 
-        public OrdersFilters SelectedOrderFilter
+        public ItemsFilters SelectedItemFilter
         {
-            get { return _selectedOrderFilter; }
+            get { return _selectedItemFilter; }
             set
             {
-                _selectedOrderFilter = value;
+                _selectedItemFilter = value;
                 Orders.Refresh();
             }
         }
@@ -73,16 +73,16 @@ namespace CoinsOrganizerDesktop.ViewModels
                 
             }
 
-            switch (SelectedOrderFilter.Name)
+            switch (SelectedItemFilter.Name)
             {
                 case "Оплачені":
 
-                    result = order.IsPaid && !order.IsIgnored; ;
+                    result = order.IsPaid && !order.IsIgnored;
 
                     break;
                 case "Не оплачені":
 
-                    result = !order.IsPaid && !order.IsIgnored; ;
+                    result = !order.IsPaid && !order.IsIgnored;
 
                     break;
                 case "Відправлені":
@@ -92,12 +92,12 @@ namespace CoinsOrganizerDesktop.ViewModels
                     break;
                 case "Не відправлені":
 
-                    result = !order.IsShipped && !order.IsIgnored; ;
+                    result = !order.IsShipped && !order.IsIgnored;
 
                     break;
                 case "Оплачені, не відправлені":
 
-                    result = order.IsPaid && !order.IsShipped && !order.IsIgnored; ;
+                    result = order.IsPaid && !order.IsShipped && !order.IsIgnored;
 
                     break;
                 case "Трек номер не вказаний":
@@ -128,7 +128,6 @@ namespace CoinsOrganizerDesktop.ViewModels
         public ICollectionView OrdersFiltersSource { get; set; }
 
         public NewOrderModel NewOrder { get; set; }
-
 
         public ICommand AddNewOrderCommand
         {
@@ -241,7 +240,7 @@ namespace CoinsOrganizerDesktop.ViewModels
         }
     }
 
-    public class OrdersFilters
+    public class ItemsFilters
     {
         public string Name { get; set; }
         public string Category { get; set; }

@@ -341,7 +341,7 @@
                 HorizontalAlignment="Center"
                 SelectedIndex="0"
                 ItemsSource="{Binding OrdersFiltersSource}"
-                SelectedItem="{Binding SelectedOrderFilter}">
+                SelectedItem="{Binding SelectedItemFilter}">
                 <ComboBox.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>

@@ -41,9 +41,26 @@ namespace CoinsOrganizerDesktop.ViewModels
 
             NewCoin = new NewCoinModel();
 
+            List<ItemsFilters> items = new List<ItemsFilters>();
+            items.Add(new ItemsFilters() { Name = "Всі", Category = "A" });
+            items.Add(new ItemsFilters() { Name = "Наявні", Category = "B" });
+            items.Add(new ItemsFilters() { Name = "Продані", Category = "B" });
+            items.Add(new ItemsFilters() { Name = "Вист. на Allegro", Category = "C" });
+            items.Add(new ItemsFilters() { Name = "Вист. на Allegro x2", Category = "C" });
+            items.Add(new ItemsFilters() { Name = "Не вист. на Allegro", Category = "C" });
+            items.Add(new ItemsFilters() { Name = "Oferta на Allegro", Category = "C" });
+            items.Add(new ItemsFilters() { Name = "Вист. на Allegro, не в наявності", Category = "C" });
+            
+            ICollectionView groupedCoinsFilters = new ListCollectionView(items);
+            groupedCoinsFilters.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
+            CoinsFiltersSource = groupedCoinsFilters;
+
             ICollectionView collection = new ListCollectionView(coinsbl);
             //collection.GroupDescriptions.Add(new PropertyGroupDescription("Link", new CoinsGroupingToExcludeSingleItemConverter()));
             Coins = collection;
+
+            SelectedItemFilter = items[0];
+            collection.Filter = CoinFilter;
 
             //var coinsInStock = coinsbl.Where(w => w.OrderBL == null).Select(x => x.CoinId);
             //var allegroCoins = AllegroService.ActiveList;
@@ -104,6 +121,19 @@ namespace CoinsOrganizerDesktop.ViewModels
 
             //var sdfsdf = dontHaveInd.Select(x => x.itemTitle);
         }
+        private ItemsFilters _selectedItemFilter;
+
+        public ItemsFilters SelectedItemFilter
+        {
+            get { return _selectedItemFilter; }
+            set
+            {
+                _selectedItemFilter = value;
+                Coins.Refresh();
+            }
+        }
+
+        public ICollectionView CoinsFiltersSource { get; set; }
 
         public NewCoinModel NewCoin { get; set; }
 
@@ -251,14 +281,60 @@ namespace CoinsOrganizerDesktop.ViewModels
 
             var coin = (CoinBL) obj;
 
-            if (TableState == CoinTableState.Available)
+
+            switch (SelectedItemFilter.Name)
             {
-                result = coin.IsInStock;
+                case "Всі":
+
+                    result = true;
+
+                    break;
+                case "Наявні":
+
+                    result = coin.IsInStock;
+
+                    break;
+                case "Продані":
+
+                    result = coin.IsSold;
+
+                    break;
+                case "Вист. на Allegro":
+
+                    result = coin.IsOnAllegroSale;
+
+                    break;
+                case "Вист. на Allegro x2":
+
+                    result = coin.HasSuperfluousItemOnAllegroSale;
+
+                    break;
+                case "Не вист. на Allegro":
+
+                    result = !coin.IsOnAllegroSale && coin.IsInStock;
+
+                    break;
+                case "Вист. на Allegro, не в наявності":
+
+                    result = coin.IsOnAllegroSale && !coin.IsInStock;
+
+                    break;
+                case "Oferta на Allegro":
+
+                    result = coin.AllegroItemBiddersCount > 0;
+
+                    break;
+                default: break;
             }
-            else if (TableState == CoinTableState.Sold)
-            {
-                result = coin.IsSold;
-            }
+
+            //if (TableState == CoinTableState.Available)
+            //{
+            //    result = coin.IsInStock;
+            //}
+            //else if (TableState == CoinTableState.Sold)
+            //{
+            //    result = coin.IsSold;
+            //}
 
             return result;
         }
