@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using System.Text;
@@ -12,13 +13,35 @@ using CoinsOrganizerDesktop.AllegroWebApiService;
 using eBay.Service.Call;
 using eBay.Service.Core.Sdk;
 using eBay.Service.Core.Soap;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace CoinsOrganizerDesktop.MarketService
 {
+    public static class TimerEvent
+    {
+        private static Timer _timer = null;
+        public static event EventHandler TimerFired;
+
+        public static void InitializeTimer()
+        {
+            _timer = new Timer(Callback, null, TimeSpan.Zero, TimeSpan.FromMinutes(2));
+        }
+
+        private static void Callback(object state)
+        {
+            if (TimerFired != null)
+            {
+                TimerFired(null, EventArgs.Empty);
+            }
+        }
+    }
+
     public static class AllegroService
     {
         private static servicePortClient _apiContext = null;
         private static string _login = null;
+        private static string _accessToken;
         private static DispatcherTimer _timer = null;
         private static Timer _timer2 = null;
         private static readonly SellItemStruct _emptyItem = new SellItemStruct { itemId = -1};
@@ -28,8 +51,8 @@ namespace CoinsOrganizerDesktop.MarketService
 
         public static void InitializeAllegro()
         {
-            GetApiContext();
-
+            //GetApiContext();
+            AllegroRestApiAuthorization();
 
             if (ActiveList == null)
             {
@@ -48,14 +71,115 @@ namespace CoinsOrganizerDesktop.MarketService
                 //    RefreshAllegroData, Dispatcher.CurrentDispatcher);
                 //_timer.Start();
                 //_timer.
-                RefreshAllegroData(null, null);
 
                 //CheckDublicates();
 
                 //GetAllegroItems(0,0);
 
                 //CheckDublicates();
+
+
+                RefreshAllegroData(null, null);
+
             }
+        }
+
+        private static void Mainm()
+        {
+            string readText = File.ReadAllText(@"code.txt");
+            _accessToken = readText;
+
+            var offers = GetOffers();
+        }
+
+        private static async void AllegroRestApiAuthorization()
+        {
+            var fileLines = File.ReadLines(@"code.txt");
+            _accessToken = fileLines.First();
+            var date = DateTime.Parse(fileLines.Last());
+
+            var hours = (DateTime.Now - date).TotalHours;
+
+            if (hours >= 12)
+            {
+                string redirectURI = "http://127.0.0.1:1072/";
+                string authorizationEndpoint2 = "https://allegro.pl/auth/oauth/authorize";
+                string clientId = "dc3029f850b049f6a07ec1454a08faed";
+                string secretId = "9kISOUUOEnnlXeE0czWDYIPqzVHZIXPcrY4gPEB2KNWgErsrhu7yZt8mP62aIWy1";
+
+                var http = new HttpListener();
+                http.Prefixes.Add(redirectURI);
+                http.Start();
+
+                string authorizationRequest = string.Format("{0}?response_type=code&client_id={1}",
+                    authorizationEndpoint2, clientId);
+
+                System.Diagnostics.Process.Start(authorizationRequest);
+                Thread.Sleep(2000);
+                var context = await http.GetContextAsync();
+
+                //this.Activate();
+
+                var response = context.Response;
+                response.OutputStream.Close();
+                http.Stop();
+                var code = context.Request.QueryString.Get("code");
+                AllegroConnect(code);
+            }
+        }
+
+
+        public static void AllegroConnect(string code)
+        {
+            string base64 = Convert.ToBase64String(Encoding.ASCII.GetBytes("dc3029f850b049f6a07ec1454a08faed:9kISOUUOEnnlXeE0czWDYIPqzVHZIXPcrY4gPEB2KNWgErsrhu7yZt8mP62aIWy1"));
+
+            var client = new RestClient("https://allegro.pl/auth/oauth/token?grant_type=authorization_code&code=" + code);
+            var request = new RestRequest(Method.POST);
+
+            request.AddHeader("Authorization", $"Basic {base64}");
+            var response = client.Execute(request);
+
+            File.WriteAllText(@"code.txt", response.Content + Environment.NewLine + DateTime.Now);
+        }
+
+        public static IList<OfferJson> GetOffers()
+        {
+            var accessToken = JsonConvert.DeserializeObject<AuthorizationJson>(_accessToken);
+
+            var client = new RestClient("https://api.allegro.pl/");
+            List<OfferJson> list = new List<OfferJson>();
+            bool loading = true;
+
+            while (loading)
+            {
+                var request = new RestRequest(" sale/offers?publication.status=ACTIVE&limit=1000", Method.GET);
+                var limitOffset = list.Count == 0 ? 0 : 1000;
+                request.AddHeader("Authorization", $"Bearer {accessToken.AccessToken}");
+                request.AddHeader("Accept", "application/vnd.allegro.beta.v1+json");
+                request.AddHeader("Content-Type", "application/vnd.allegro.beta.v1+json");
+                request.AddParameter("offset", limitOffset);
+
+                var response = client.Execute(request);
+                var deserializeObject = JsonConvert.DeserializeObject<OffersJson>(response.Content);
+
+                if (deserializeObject.Offers.Count < 1000)
+                {
+                    loading = false;
+                }
+
+                list.AddRange(deserializeObject.Offers);
+            }
+
+            return list;
+        }
+
+        private static void RefreshAllegroData(object sender, EventArgs eventArgs)
+        {
+            ActiveList.Clear();
+            SoldList.Clear();
+
+
+            var offers = GetOffers();
         }
 
         public static int GetItemCountById(int index)
@@ -64,7 +188,7 @@ namespace CoinsOrganizerDesktop.MarketService
 
             if (count > 1)
             {
-                
+                var it = ActiveList.Where(x => x.itemTitle.Contains("*(" + index + ")"));
             }
             return count;
         }
@@ -78,7 +202,7 @@ namespace CoinsOrganizerDesktop.MarketService
 
         private static void Callback(object state)
         {
-            RefreshAllegroData(null, null);
+            RefreshAllegroDataOld(null, null);
         }
 
         public static void EditItem()
@@ -336,7 +460,7 @@ namespace CoinsOrganizerDesktop.MarketService
 
 
 
-        private static void RefreshAllegroData(object sender, EventArgs eventArgs)
+        private static void RefreshAllegroDataOld(object sender, EventArgs eventArgs)
         {
             ActiveList.Clear();
             SellItemStruct[] sellItems;

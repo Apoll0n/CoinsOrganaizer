@@ -140,6 +140,7 @@
         </Style>
 
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:CoinEntityToWrapObjectConverter x:Key="CoinEntityToWrapObjectConverter"/>
 
     </UserControl.Resources>
 
@@ -557,7 +558,7 @@
                                     FontWeight="Bold"
                                     Foreground="Black"
                                     PreviewTextInput="UIElement_OnPreviewTextInput"
-                                    Text="{Binding Cost, Mode=TwoWay, StringFormat={}{0}грн., Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
+                                    Text="{Binding CoinBL.Cost, Mode=TwoWay, StringFormat={}{0}грн., Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
 
                                 <!--<TextBlock
                                     HorizontalAlignment="Right"
@@ -580,7 +581,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         FontSize="12"
-                                        Text="{Binding Link}"
+                                        Text="{Binding CoinBL.Link}"
                                         TextWrapping="Wrap" />
                                 </Popup>
                             </Grid>
@@ -651,7 +652,7 @@
                                     FontSize="16"
                                     Foreground="Black"
                                     PreviewTextInput="UIElement_OnPreviewTextInput"
-                                    Text="{Binding ZlotyPrice, Mode=TwoWay, StringFormat={}{0}zł, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
+                                    Text="{Binding CoinBL.ZlotyPrice, Mode=TwoWay, StringFormat={}{0}zł, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
 
                                 <TextBox
                                     Grid.Row="0"
@@ -663,7 +664,7 @@
                                     BorderThickness="0"
                                     FontSize="12"
                                     Foreground="Black"
-                                    Text="{Binding PolishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                    Text="{Binding CoinBL.PolishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     TextWrapping="Wrap" />
 
                                 <TextBlock
@@ -671,9 +672,9 @@
                                     Grid.Column="1"
                                     Margin="2"
                                     HorizontalAlignment="Left"
-                                    Visibility="{Binding IsOnAllegroSale, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <Hyperlink NavigateUri="{Binding AllegroItemLink}" RequestNavigate="Hyperlink_RequestNavigate">
-                                        <TextBlock Text="{Binding AllegroItemTitle}" />
+                                    Visibility="{Binding CoinBL.IsOnAllegroSale, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Hyperlink NavigateUri="{Binding CoinBL.AllegroItemLink}" RequestNavigate="Hyperlink_RequestNavigate">
+                                        <TextBlock Text="{Binding CoinBL.AllegroItemTitle}" />
                                     </Hyperlink>
                                 </TextBlock>
                                 <!--<StackPanel HorizontalAlignment="Right" Orientation=" Horizontal" Grid.Row="1" Grid.Column="1">
@@ -687,8 +688,8 @@
                                     Grid.Column="1"
                                     Margin="2"
                                     HorizontalAlignment="Right"
-                                    Text="{Binding AllegroItemInfo}"
-                                    Visibility="{Binding IsOnAllegroSale, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    Text="{Binding CoinBL.AllegroItemInfo}"
+                                    Visibility="{Binding CoinBL.IsOnAllegroSale, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                             </Grid>
                         </DataTemplate>
@@ -716,7 +717,7 @@
                                     FontSize="16"
                                     Foreground="Black"
                                     PreviewTextInput="UIElement_OnPreviewTextInput"
-                                    Text="{Binding DollarPrice, Mode=TwoWay, StringFormat={}{0}$, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
+                                    Text="{Binding CoinBL.DollarPrice, Mode=TwoWay, StringFormat={}{0}$, Converter={StaticResource PriceStringToPriceIntConverter}, UpdateSourceTrigger=LostFocus}" />
 
                                 <TextBox
                                     Grid.Column="1"
@@ -727,7 +728,7 @@
                                     BorderThickness="0"
                                     FontSize="12"
                                     Foreground="Black"
-                                    Text="{Binding EnglishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                    Text="{Binding CoinBL.EnglishName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     TextWrapping="Wrap" />
                             </Grid>
                         </DataTemplate>
@@ -744,7 +745,7 @@
                                         <MenuItem
                                             Header="Наявний?"
                                             IsCheckable="True"
-                                            IsChecked="{Binding IsInStock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            IsChecked="{Binding CoinBL.IsInStock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <MenuItem
                                             Command="{Binding DataContext.DeleteCoinCommand, Source={x:Reference CoinDataGrid}}"
                                             CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}"
@@ -763,15 +764,15 @@
                                     VerticalAlignment="Center"
                                     FontSize="14"
                                     Foreground="Black"
-                                    Text="{Binding OrderBL.PriceCurrency, StringFormat=Продано за {0}}">
+                                    Text="{Binding CoinBL.OrderBL.PriceCurrency, StringFormat=Продано за {0}}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSold}" Value="True">
+                                                <DataTrigger Binding="{Binding CoinBL.IsSold}" Value="True">
                                                     <Setter Property="Text" Value="Продано" />
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsSold}" Value="false">
+                                                <DataTrigger Binding="{Binding CoinBL.IsSold}" Value="false">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -789,7 +790,7 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsInStock}" Value="False">
+                                                <DataTrigger Binding="{Binding CoinBL.IsInStock}" Value="False">
                                                     <Setter Property="Text" Value="Не в наявності" />
                                                     <Setter Property="Background" Value="Red" />
                                                 </DataTrigger>

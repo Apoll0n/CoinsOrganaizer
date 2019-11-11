@@ -17,10 +17,11 @@ namespace CoinsOrganizerDesktop
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            EbayService.InitializeEbay();
+            //EbayService.InitializeEbay();
             AllegroService.InitializeAllegro();
             //Mapper.Initialize(cfg => { });
             base.OnStartup(e);
+            TimerEvent.InitializeTimer();
         }
     }
 }

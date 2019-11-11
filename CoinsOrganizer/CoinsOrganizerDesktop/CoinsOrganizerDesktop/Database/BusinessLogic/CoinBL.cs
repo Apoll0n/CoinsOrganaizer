@@ -28,10 +28,39 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         private int _orderId;
         private SellItemStruct _allegroItem;
         private int _allegroOnSaleCount;
+        private OrderBL _orderBl;
 
         public CoinBL(Coin coin)
         {
             CoinDB = coin;
+            //var order = coin.Order;
+
+            //if (order != null && order.Count > 0)
+            //{
+            //    var lastOrder = order.LastOrDefault();
+            //    OrderBL = new OrderBL(lastOrder) {CoinBL = this};
+            //}
+
+            UpdateAllegroData();
+
+            TimerEvent.TimerFired+= TimerEventOnTimerFired;
+
+        }
+
+        private void TimerEventOnTimerFired(object sender, EventArgs e)
+        {
+            UpdateAllegroData();
+        }
+
+        public CoinBL(Coin coin, Order order)
+        {
+            CoinDB = coin;
+
+            if (order != null)
+            {
+                OrderBL = new OrderBL(order);
+            }
+
             UpdateAllegroData();
         }
 
@@ -164,7 +193,24 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             set => CoinDB.ReversFotoLink = value;
         }
 
-        public OrderBL OrderBL { get; set; }
+        public OrderBL OrderBL
+        {
+            get
+            {
+                //if (_orderBl == null)
+                //{
+                //    var lastOrder = CoinDB.Order.LastOrDefault();
+                //    if (lastOrder != null)
+                //    {
+                //        //_orderBl = new OrderBL(lastOrder);
+                //    }
+                //}
+
+                return _orderBl;
+
+            }
+            set { _orderBl = value; }
+        }
 
         public int OrderId  
         {

@@ -27,6 +27,13 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         public OrderBL(Order order)
         {
             OrderDB = order;
+
+            //var coin = order.Coin;
+
+            //if (coin != null)
+            //{
+            //    CoinBL = new CoinBL(coin) {OrderBL = this};
+            //}
         }
 
         public Order OrderDB { get; set; }

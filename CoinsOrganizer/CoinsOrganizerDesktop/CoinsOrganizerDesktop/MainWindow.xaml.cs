@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -26,10 +27,74 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using RestSharp;
+using RestSharp.Authenticators;
+using RestSharp.Extensions;
 
 namespace CoinsOrganizerDesktop
 {
-    /// <summary>
+
+    public class CustomAuthenticator : IAuthenticator
+    {
+        public void Authenticate(IRestClient client, IRestRequest request)
+        {
+        }
+    }
+
+    public enum httpVerb
+    {
+        GET,
+        POST,
+        PUT,
+        DELETE
+    }
+
+    public class CustRestClient
+    {
+        public string EndPoint { get; set; }
+        public httpVerb httpMethod { get; set; }
+
+        public CustRestClient()
+        {
+            EndPoint = string.Empty;
+            httpMethod = httpVerb.GET;
+        }
+
+        public string MakeRequest()
+        {
+            string strRespValue = string.Empty;
+
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(EndPoint);
+
+            request.Method = httpMethod.ToString();
+            //request.ContentLength = 500;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    // error
+                }
+
+                using (Stream respStream = response.GetResponseStream())
+                {
+                    if (respStream!=null)
+                    {
+                        using (StreamReader reader = new StreamReader(respStream))
+                        {
+                            strRespValue = reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+
+            return strRespValue;
+
+        }    
+
+    }
+
+/// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
@@ -39,10 +104,9 @@ namespace CoinsOrganizerDesktop
         public MainWindow()
         {
             InitializeComponent();
+            //WebBrowser.Navigate("https://allegro.pl/auth/oauth/authorize?response_type=code&client_id=640314ba49b245f7be0a4fce0b76a6e0&redirect_uri=https://volodymyrcoins.com");
             //_coinsList = new List<Coin>();
             DataContext = new MainWindowViewModel();
-            //_ordersList = new List<Order>();
-
 
             //AllegroService.EditItem();
 
@@ -80,68 +144,68 @@ namespace CoinsOrganizerDesktop
 
 
 
-           /* using (var db = new CoinsOrganizerContext(connectionString))
-             {
+            /* using (var db = new CoinsOrganizerContext(connectionString))
+              {
 
-                 //var coin = new Coin() { CoinId = 2, Cost = 11, Name = "Poltorak1", Link = "link" };
-                 //var coin2 = new Coin() { CoinId = 3, Cost = 12, Name = "Poltorak2", Link = "link" };
-                 //db.Coins.Add(coin);
-                 //db.Coins.Add(coin2);
-                 //db.SaveChanges();
+                  //var coin = new Coin() { CoinId = 2, Cost = 11, Name = "Poltorak1", Link = "link" };
+                  //var coin2 = new Coin() { CoinId = 3, Cost = 12, Name = "Poltorak2", Link = "link" };
+                  //db.Coins.Add(coin);
+                  //db.Coins.Add(coin2);
+                  //db.SaveChanges();
 
-                 ////var query = db.Coins.OrderBy(x => x.Name);
+                  ////var query = db.Coins.OrderBy(x => x.Name);
 
-                 ////foreach (var coin1 in query)
-                 ////{
+                  ////foreach (var coin1 in query)
+                  ////{
 
-                 ////}
+                  ////}
 
 
-                 //var order = new Order()
-                 //{
-                 //    CoinId = 2,
-                 //    Name = "Polt",
-                 //    NickName = "apollon",
-                 //    SalePrice = 10,
-                 //    WhereSold = "Allegro"
-                 //};
-                 //var order2 = new Order()
-                 //{
-                 //    CoinId = 3,
-                 //    Name = "Polt2",
-                 //    NickName = "apollon2",
-                 //    SalePrice = 10,
-                 //    WhereSold = "Allegro2"
-                 //};
-                 //db.Orders.Add(order);
-                 //db.Orders.Add(order2);
-                 //db.SaveChanges();
+                  //var order = new Order()
+                  //{
+                  //    CoinId = 2,
+                  //    Name = "Polt",
+                  //    NickName = "apollon",
+                  //    SalePrice = 10,
+                  //    WhereSold = "Allegro"
+                  //};
+                  //var order2 = new Order()
+                  //{
+                  //    CoinId = 3,
+                  //    Name = "Polt2",
+                  //    NickName = "apollon2",
+                  //    SalePrice = 10,
+                  //    WhereSold = "Allegro2"
+                  //};
+                  //db.Orders.Add(order);
+                  //db.Orders.Add(order2);
+                  //db.SaveChanges();
 
-                 var orders = db.Orders.OrderBy(x => x.OrderId);
-                 var coins = db.Coins.OrderBy(x => x.CoinId);
+                  var orders = db.Orders.OrderBy(x => x.OrderId);
+                  var coins = db.Coins.OrderBy(x => x.CoinId);
 
-                 foreach (var order1 in orders)
-                 {
-                    //var order = order1.Coin;
-                    db.Orders.Remove(order1);
+                  foreach (var order1 in orders)
+                  {
+                     //var order = order1.Coin;
+                     db.Orders.Remove(order1);
 
-                }
-                 db.SaveChanges();
+                 }
+                  db.SaveChanges();
 
-                 foreach (var coin1 in coins)
-                 {
-                    //var coin = coin1.Order;
-                    //coin.OrderId = Orders
-                    db.Coins.Remove(coin1);
+                  foreach (var coin1 in coins)
+                  {
+                     //var coin = coin1.Order;
+                     //coin.OrderId = Orders
+                     db.Coins.Remove(coin1);
 
-                    //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
-                    //if (orderCollection != null && orderCollection.Count()>0)
-                    //{
+                     //var orderCollection = orders.Where(x => x.CoinId == coin1.CoinId).Select(x=>x.Name);
+                     //if (orderCollection != null && orderCollection.Count()>0)
+                     //{
 
-                    //}
-                }
-                 db.SaveChanges();
-             }*/
+                     //}
+                 }
+                  db.SaveChanges();
+              }*/
 
             //CheckAllegroIndexes();
 

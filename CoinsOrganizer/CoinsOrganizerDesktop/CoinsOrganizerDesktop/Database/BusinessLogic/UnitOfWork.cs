@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
 using CoinsOrganizerDesktop.DataBase.DbContext;
@@ -13,23 +14,28 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
         private CoinsOrganizerContext DataBase { get; }
         private OrderDB _ordersRepository;
         private CoinsDB _coinsRepository;
-        private List<CoinBL> _coinsBl;
+        private List<Coin> _coinsBl;
         private List<OrderBL> _ordersBl;
+        private ObservableCollection<Coin> _coinsLocal;
 
         public UnitOfWork()
         {
             var connectionString = ConfigurationManager.AppSettings["DbConnectionString"];
             DataBase = new CoinsOrganizerContext(connectionString);
 
-            var coinsBl = CoinsBl;
-            var ordersBl = OrdersBl;
+            CoinsLocal = GetCoinsLoad();
 
-            foreach (var order in ordersBl)
-            {
-                var coin = coinsBl.Single(x => x.CoinId.Equals(order.CoinId));
-                order.CoinBL = coin;
-                coin.OrderBL = order;
-            }
+
+
+            //var coinsBl = CoinsBl;
+            //var ordersBl = OrdersBl;
+
+            //foreach (var order in ordersBl)
+            //{
+            //    var coin = coinsBl.Single(x => x.CoinId.Equals(order.CoinId));
+            //    order.CoinBL = coin;
+            //    coin.OrderBL = order;
+            //}
         }
 
         public bool IsDirty { get; set; }
@@ -54,29 +60,33 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             }
         }
 
-        public List<CoinBL> CoinsBl
+        public List<Coin> CoinsBl
         {
             get
             {
-                if (_coinsBl == null || IsDirty)
-                {
-                    _coinsBl = new List<CoinBL>();
-                    if (_coinsRepository == null)
-                    {
-                        _coinsRepository = new CoinsDB(DataBase);
-                    }
+                //if (_coinsBl == null || IsDirty)
+                //{
+                //    _coinsBl = new List<Coin>();
+                //    if (_coinsRepository == null)
+                //    {
+                //        _coinsRepository = new CoinsDB(DataBase);
+                //    }
 
-                    var coins = _coinsRepository.ReadAll();
+                //    var coins = _coinsRepository.ReadAll();
 
-                    foreach (var item in coins)
-                    {
-                        var coinBl = new CoinBL(item);
-                        _coinsBl.Add(coinBl);
-                    }
-                }
+                    //foreach (var item in coins)
+                    //{
+                    //    var coinBl = new CoinBL(item);
+                    //    _coinsBl.Add(coinBl);
+                    //}
+
+                    IsDirty = false;
+                //}
                 return _coinsBl;
             }
         }
+
+        public ObservableCollection<Coin> CoinsLocal { get; private set; }
 
         public List<OrderBL> OrdersBl
         {
@@ -100,6 +110,12 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
                 }
                 return _ordersBl;
             }
+        }
+
+        private ObservableCollection<Coin> GetCoinsLoad()
+        {
+            DataBase.Coins.Load();
+            return DataBase.Coins.Local;
         }
 
         public void Save()

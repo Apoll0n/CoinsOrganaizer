@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using AutoMapper;
 using CoinsOrganizerDesktop.Database.DatabaseModels;
@@ -58,7 +59,7 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
 
         public void UpdateCoin(CoinBL element)
         {
-            if (element != null && GetCoinsBL().Any(x => x.CoinId.Equals(element.CoinId)))
+            if (element != null && DB.CoinsLocal.Any(x => x.CoinId.Equals(element.CoinId)))
             {
                 DB.Coins.Update(element.CoinDB);
                 DB.Save();
@@ -94,15 +95,20 @@ namespace CoinsOrganizerDesktop.Database.BusinessLogic
             return DB.Coins.ReadAll().ToList();
         }
 
+        public ObservableCollection<Coin> GetCoinsLocal()
+        {
+            return DB.CoinsLocal;
+        }
+
         public void ApplyChanges()
         {
             DB.IsDirty = true;
         }
 
-        public IList<CoinBL> GetCoinsBL()
-        {
-            return DB.CoinsBl;
-        }
+        //public IList<CoinBL> GetCoinsBL()
+        //{
+        //    return DB.CoinsBl;
+        //}
 
         public IList<Order> GetOrders()
         {

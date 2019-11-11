@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using CoinsOrganizerDesktop.Database.DatabaseModels;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CoinsOrganizerDesktop.DataBase.DbContext
+namespace DatabaseUpdater
 {
     public class CoinsOrganizerContext : System.Data.Entity.DbContext
     {
@@ -16,17 +16,7 @@ namespace CoinsOrganizerDesktop.DataBase.DbContext
 
         public CoinsOrganizerContext(string connString) : base(connString)
         {
-            //Database.Initialize();
-
-            //Database.SetInitializer(new DropCreateDatabaseAlways<CoinsOrganizerContext>());
             this.Database.Connection.ConnectionString = connString;
-
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Coin>().Ignore(b => b.CoinBL);
-            //base.OnModelCreating(modelBuilder);
         }
     }
 

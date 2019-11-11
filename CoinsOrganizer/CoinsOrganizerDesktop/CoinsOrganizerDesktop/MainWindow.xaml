@@ -11,11 +11,11 @@
     mc:Ignorable="d">
     <Grid>
         <TabControl>
-            <TabItem Header="Coins">
+            <TabItem Header="Монети">
                 <views:CoinsView />
                 <!--<views:OrdersView />-->
             </TabItem>
-            <TabItem Header="Orders">
+            <TabItem Header="Висилка">
                 <views:OrdersView />
             </TabItem>
             <TabItem IsSelected="True" Header="Details">

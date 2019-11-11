@@ -77,6 +77,9 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="RestSharp, Version=106.6.9.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.9\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -86,6 +89,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -106,20 +110,22 @@
     </ApplicationDefinition>
     <Compile Include="Database\BusinessLogic\CoinBL.cs" />
     <Compile Include="Database\BusinessLogic\OrderBL.cs" />
-    <Compile Include="Database\BusinessLogic\UnitOfWork.cs" />
     <Compile Include="Database\BusinessLogic\BusinessLogic.cs" />
+    <Compile Include="Database\BusinessLogic\UnitOfWork.cs" />
     <Compile Include="Database\CoinsDB.cs" />
     <Compile Include="Database\ICoinsRepository.cs" />
     <Compile Include="Database\OrderDB.cs" />
     <Compile Include="Helpers\ActionCommand.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="Helpers\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converters\CoinEntityToWrapObjectConverter.cs" />
     <Compile Include="Helpers\Converters\CoinsGroupingToExcludeSingleItemConverter.cs" />
     <Compile Include="Helpers\Converters\EnumValueToStringConverter.cs" />
     <Compile Include="Helpers\Converters\GroupDataContextToBuyPriceSumConverter.cs" />
     <Compile Include="Helpers\Converters\GroupDataContextToSellPriceSumConverter.cs" />
     <Compile Include="Helpers\Converters\PriceStringToPriceIntConverter.cs" />
     <Compile Include="Helpers\Extension\EnumValuesExtension.cs" />
+    <Compile Include="MarketService\AllegroJson.cs" />
     <Compile Include="Migrations\201901012108425_AddTwoProps.cs" />
     <Compile Include="Migrations\201901012108425_AddTwoProps.Designer.cs">
       <DependentUpon>201901012108425_AddTwoProps.cs</DependentUpon>
@@ -743,7 +749,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

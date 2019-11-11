@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -31,13 +32,15 @@ namespace CoinsOrganizerDesktop.ViewModels
     {
         private BusinessLogic _businessLogic;
         private CoinBL _selectedRow;
-        private ICollectionView _coins;
+        private ObservableCollection<Coin> _coins;
 
         public CoinsViewModel()
         {
             _businessLogic = new BusinessLogic();
-            var coinsbl = _businessLogic.GetCoinsBL().ToList();
-            //Coins = new ObservableCollection<CoinBL>(coinsbl);
+            var coinsLocal = _businessLogic.GetCoinsLocal();
+
+            var maxInd = coinsLocal.Max(x => x.CoinId) + 1;
+            Coins = coinsLocal;
 
             NewCoin = new NewCoinModel();
 
@@ -50,77 +53,18 @@ namespace CoinsOrganizerDesktop.ViewModels
             items.Add(new ItemsFilters() { Name = "Не вист. на Allegro", Category = "C" });
             items.Add(new ItemsFilters() { Name = "Oferta на Allegro", Category = "C" });
             items.Add(new ItemsFilters() { Name = "Вист. на Allegro, не в наявності", Category = "C" });
-            
+
             ICollectionView groupedCoinsFilters = new ListCollectionView(items);
             groupedCoinsFilters.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
             CoinsFiltersSource = groupedCoinsFilters;
 
-            ICollectionView collection = new ListCollectionView(coinsbl);
-            //collection.GroupDescriptions.Add(new PropertyGroupDescription("Link", new CoinsGroupingToExcludeSingleItemConverter()));
-            Coins = collection;
+            //var collection = new ListCollectionView(coinsLocal);
+            //Coins = collection;
 
             SelectedItemFilter = items[0];
-            collection.Filter = CoinFilter;
-
-            //var coinsInStock = coinsbl.Where(w => w.OrderBL == null).Select(x => x.CoinId);
-            //var allegroCoins = AllegroService.ActiveList;
-
-            //var hasInd = allegroCoins.Where(x => x.itemTitle.Contains("(") && x.itemTitle.Contains(")"));
-            //var dontHaveInd = allegroCoins
-            //    .Where(x => !x.itemTitle.Contains("(") && !x.itemTitle.Contains(")")) /*.Select(x => x.itemTitle)*/;
-            //var indexes = hasInd
-            //    //    .Where(x=>
-            //    //{
-            //    //    var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
-            //    //    var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
-            //    //    int result;
-            //    //    return int.TryParse(coinIndex, out result);
-            //    //})
-            //    .SelectMany(x =>
-            //        {
-            //            var ind = x.itemTitle.LastIndexOf("(", StringComparison.InvariantCulture);
-            //            var coinIndex = x.itemTitle.Substring(ind).Replace(")", "").Replace("(", "");
-            //            int result;
-            //            if (!int.TryParse(coinIndex, out result))
-            //            {
-            //                return new[] {new {Index = -1, ItemID = x.itemId, Index2 = coinIndex, x}};
-            //            }
-            //            return new[] {new {Index = result, ItemID = x.itemId, Index2 = coinIndex, x}};
-            //        }
-
-            //    ).OrderBy(x => x.Index);
-            //var indexesList = indexes.ToList();
-
-            //var duplicates = indexes
-            //    .GroupBy(i => i.Index)
-            //    .Where(g => g.Count() > 1);
-
-            //var allegroCoinsInndexex = indexes.Skip(18).Select(x => x.Index);
-
-            //var unicInd = new int[]{ 4061, 4062, 4063, 4064, 4065, 4066, 4067, 4068, 4069, 4070, 4071, 4072, 4073, 4074, 4075, 4076, 4077, 4078, 4079, 4080, 4081, 4082, 4083, 4084, 4085, 4086, 4087, 4088, 4089, 4090, 4091, 4092, 4093, 4051, 4052, 4053, 4054, 4055, 4056, 4057, 4058, 4059, 4060 }.Except(allegroCoinsInndexex).ToArray();
-
-            //foreach (var indeax in allegroCoinsInndexex)
-            //{
-            //    if (unicInd.Any(x=>x==indeax))
-            //    {
-
-            //    }
-            //}
-            ////var adsasd = allegroCoinsInndexex
-
-            //string[] mas = new string[unicInd.Count()];
-            //string mas2 = String.Empty;
-            //for (int i = 0; i < unicInd.Count(); i++)
-            //{
-            //    var index = unicInd[i];
-            //    mas2 += index + ", ";
-            //}
-
-            //File.WriteAllText("indexes.txt", mas2);
-
-
-            //var sdfsdf = dontHaveInd.Select(x => x.itemTitle);
+            //collection.Filter = CoinFilter;
         }
+
         private ItemsFilters _selectedItemFilter;
 
         public ItemsFilters SelectedItemFilter
@@ -129,7 +73,7 @@ namespace CoinsOrganizerDesktop.ViewModels
             set
             {
                 _selectedItemFilter = value;
-                Coins.Refresh();
+                //Coins.Refresh();
             }
         }
 
@@ -146,24 +90,35 @@ namespace CoinsOrganizerDesktop.ViewModels
             {
                 return new ActionCommand(() =>
                 {
+                    //Task.Factory.StartNew(() =>      
+                    //{
+                        var coin = new Coin
+                        {
+                            AversFotoLink = NewCoin.AvFotoLink,
+                            ReversFotoLink = NewCoin.RevFotoLink,
+                            Cost = double.Parse(NewCoin.Price),
+                            Name = NewCoin.Name,
+                            IsInStock = true,
+                            Link = NewCoin.Link,
+                            CoinId = _businessLogic.GetCoinsLocal().Max(x => x.CoinId) + 1
+                        };
 
-                    var coin = new Coin
-                    {
-                        AversFotoLink = NewCoin.AvFotoLink,
-                        ReversFotoLink = NewCoin.RevFotoLink,
-                        Cost = double.Parse(NewCoin.Price),
-                        Name = NewCoin.Name,
-                        Link = NewCoin.Link,
-                        CoinId = _businessLogic.GetCoinsBL().Max(x => x.CoinId) + 1
-                    };
+                        _businessLogic.AddCoin(coin);
+                        _businessLogic.ApplyChanges();
 
-                    _businessLogic.AddCoin(coin);
+                        //var coinsbl = _businessLogic.GetCoinsBL();
+                        //var newItem = coinsbl.Single(x => x.CoinId.Equals(coin.CoinId));
+                        //return newItem;
 
-                    _businessLogic.ApplyChanges();
+                    //}).ContinueWith((r) =>
+                    //{
+                        //Coins.AddNewItem(r.Result);
+                        //Coins = new ListCollectionView((IList) r.Result);
 
-                    OnPropertyChanged(nameof(Coins));
-                    ChangeTableState(TableState);
-                    SortTableIndex(SortByDescending);
+                        OnPropertyChanged(nameof(Coins));
+                        //ChangeTableState(TableState);
+                        //SortTableIndex(SortByDescending);
+                //    }, TaskScheduler.FromCurrentSynchronizationContext());
                 });
             }
         }
@@ -189,97 +144,25 @@ namespace CoinsOrganizerDesktop.ViewModels
                 });
             }
         }
-        
-        public ICommand ShowOnlyAvailableCoinsCommand
-        {
-            get
-            {
-                return new ActionCommand(() =>
-                {
-                    TableState = CoinTableState.Available;
-                    ChangeTableState(TableState);
-                    SortTableIndex(SortByDescending);
-                });
-            }
-        }
-
-        public ICommand ShowAllCoinsCommand
-        {
-            get
-            {
-                return new ActionCommand(() =>
-                {
-                    TableState = CoinTableState.All;
-                    ChangeTableState(TableState);
-                    SortTableIndex(SortByDescending);
-                });
-            }
-        }
-
-        public ICommand ShowSoldCoinsCommand
-        {
-            get
-            {
-                return new ActionCommand(() =>
-                {
-                    TableState = CoinTableState.Sold;
-                    ChangeTableState(TableState);
-                    SortTableIndex(SortByDescending);
-                });
-            }
-        }
-
-        public ICommand GroupCoinsCommand
-        {
-            get
-            {
-                return new ActionCommand<object>((e) =>
-                {
-                    if ((bool) e)
-                    {
-                        Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link"));
-                    }
-                    else
-                    {
-                        Coins.GroupDescriptions.Clear();
-                    }
-                });
-            }
-        }
-
-        public ICommand SortCoinsCommand
-        {
-            get
-            {
-                return new ActionCommand<object>((e) =>
-                {
-                    SortByDescending = (bool) e;
-                    SortTableIndex(SortByDescending);
-                });
-            }
-        }
 
         public void SortTableIndex(bool byDescending)
         {
-            Coins.SortDescriptions.Add(new SortDescription("CoinId",
-                byDescending ? ListSortDirection.Descending : ListSortDirection.Ascending));
+            //Coins.SortDescriptions.Add(new SortDescription("CoinId",
+            //    byDescending ? ListSortDirection.Descending : ListSortDirection.Ascending));
         }
 
         public void ChangeTableState(CoinTableState state)
         {
-            //IEnumerable<CoinBL> coins = Enumerable.Empty<CoinBL>();
-
-            //Coins = new ListCollectionView(coins.ToList());
-            Coins.Filter = CoinFilter;
-            Coins.Refresh();
-            OnPropertyChanged(nameof(Coins));
+            //Coins.Filter = CoinFilter;
+            //Coins.Refresh();
+            //OnPropertyChanged(nameof(Coins));
         }
 
         private bool CoinFilter(object obj)
         {
             bool result = true;
 
-            var coin = (CoinBL) obj;
+            var coin = new CoinBL((Coin) obj);
 
 
             switch (SelectedItemFilter.Name)
@@ -352,7 +235,7 @@ namespace CoinsOrganizerDesktop.ViewModels
             }
         }
 
-        public ICollectionView Coins
+        public ObservableCollection<Coin> Coins
         {
             get { return _coins; }
             set
@@ -361,5 +244,75 @@ namespace CoinsOrganizerDesktop.ViewModels
                 OnPropertyChanged(nameof(Coins));
             }
         }
+
+        public ICommand ShowOnlyAvailableCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand(() =>
+                {
+                    TableState = CoinTableState.Available;
+                    ChangeTableState(TableState);
+                    SortTableIndex(SortByDescending);
+                });
+            }
+        }
+
+        public ICommand ShowAllCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand(() =>
+                {
+                    TableState = CoinTableState.All;
+                    ChangeTableState(TableState);
+                    SortTableIndex(SortByDescending);
+                });
+            }
+        }
+
+        public ICommand ShowSoldCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand(() =>
+                {
+                    TableState = CoinTableState.Sold;
+                    ChangeTableState(TableState);
+                    SortTableIndex(SortByDescending);
+                });
+            }
+        }
+
+        public ICommand GroupCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand<object>((e) =>
+                {
+                    if ((bool)e)
+                    {
+                        //Coins.GroupDescriptions.Add(new PropertyGroupDescription("Link"));
+                    }
+                    else
+                    {
+                        //Coins.GroupDescriptions.Clear();
+                    }
+                });
+            }
+        }
+
+        public ICommand SortCoinsCommand
+        {
+            get
+            {
+                return new ActionCommand<object>((e) =>
+                {
+                    SortByDescending = (bool)e;
+                    SortTableIndex(SortByDescending);
+                });
+            }
+        }
+
     }
 }

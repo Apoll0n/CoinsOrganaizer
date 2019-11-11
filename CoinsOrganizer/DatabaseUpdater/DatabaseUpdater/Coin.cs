@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using CoinsOrganizerDesktop.Database.BusinessLogic;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CoinsOrganizerDesktop.Database.DatabaseModels
+namespace DatabaseUpdater
 {
     public class Coin
     {
-        private CoinBL _coinBl;
-
-        public Coin()
-        {
-            _coinBl = new CoinBL(this);
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CoinId { get; set; }
@@ -49,14 +44,5 @@ namespace CoinsOrganizerDesktop.Database.DatabaseModels
         public int OrderId { get; set; }
 
         public virtual List<Order> Order { get; set; }
-
-        [NotMapped]
-        public CoinBL CoinBL
-        {
-            get
-            {
-                return _coinBl;
-            }
-        }
     }
 }
